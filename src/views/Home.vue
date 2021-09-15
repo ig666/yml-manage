@@ -19,11 +19,10 @@ onMounted: {
   info.value = personInfo.value;
 }
 
-const color = ref('yellow');
 </script>
 
 <style>
 .home .home-radio {
-  background-color: v-bind(color);
+  background-color: yellow;
 }
 </style>

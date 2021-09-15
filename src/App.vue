@@ -2,7 +2,7 @@
   <img alt="Vue logo" src="./assets/logo.png" />
   <suspense>
     <template #default>
-      <Home />
+      <router-view></router-view>
     </template>
     <template #fallback>
       <div>
@@ -15,7 +15,6 @@
 <script setup lang="ts">
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { h } from 'vue';
-import Home from '@/views/Home.vue';
 
 const indicator = h(LoadingOutlined, {
   style: {
