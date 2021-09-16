@@ -1,15 +1,5 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <suspense>
-    <template #default>
-      <router-view></router-view>
-    </template>
-    <template #fallback>
-      <div>
-        <a-spin :indicator="indicator" />
-      </div>
-    </template>
-  </suspense>
+  <router-view />
 </template>
 
 <script setup lang="ts">
@@ -34,6 +24,5 @@ const indicator = h(LoadingOutlined, {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
