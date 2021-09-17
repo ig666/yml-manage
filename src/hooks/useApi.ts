@@ -32,7 +32,8 @@ function useApi<T> (url: RequestInfo, data?: any, method: string = 'GET') {
     try {
       const res = await fetch(url, options)
       const data = await res.json()
-      response.value = data
+      response.value = data;
+      return data
     } catch (error) {
       console.log(error);
     }
