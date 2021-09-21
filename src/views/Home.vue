@@ -10,7 +10,8 @@
 <script setup lang="ts">
 import { ref, Ref } from 'vue';
 
-import { getPersonInfo, Person } from '../modules/person';
+import { getPersonInfo, Person } from '../modules/person.module';
+import { useUpload } from '../modules/upload.module';
 
 const info = ref<Person | undefined>();
 
@@ -19,12 +20,18 @@ const loadData = async (pageIndex:number, pageSize:number) => {
   info.value = personInfo.value;
 }
 
+const uploadFile = async () => {
+  // const result = await useUpload();
+  // console.log(result);
+}
+
 const onClick = () => {
   loadData(1, 10);
 }
 
 onMounted: {
   loadData(1, 20);
+  uploadFile();
 }
 
 </script>
