@@ -1,38 +1,38 @@
-import { ref, Ref } from 'vue'
+import { ref, Ref } from 'vue';
 import { message } from 'ant-design-vue';
 
-export type ApiRequest = () => Promise<void>
+export type ApiRequest = () => Promise<void>;
 
 export interface UsableAPI<T> {
-  response: Ref<T | undefined>
-  request: ApiRequest
+  response: Ref<T | undefined>;
+  request: ApiRequest;
 }
 
-function useApi<T> (url: RequestInfo, data?: any, method: string = 'GET') {
-  let options: RequestInit = {}
+function useApi<T>(url: RequestInfo, data?: any, method: string = 'GET') {
+  let options: RequestInit = {};
   if (method === 'GET' || method === 'DELETE') {
-    const params = data
+    const params = data;
     if (params) {
-      let paramsArray: string[] = []
-      Object.keys(params).forEach(key =>
+      let paramsArray: string[] = [];
+      Object.keys(params).forEach((key) =>
         paramsArray.push(key + '=' + encodeURIComponent(params[key]))
-      )
-      url += '?' + paramsArray.join('&')
+      );
+      url += '?' + paramsArray.join('&');
     }
   } else {
     options = {
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
       },
-      body: JSON.stringify(data)
-    }
+      body: JSON.stringify(data),
+    };
   }
-  options.method = method
-  const response: Ref<T | undefined> = ref()
+  options.method = method;
+  const response: Ref<T | undefined> = ref();
   const request = async () => {
     try {
-      const res = await fetch(url, options)
-      const data = await res.json()
+      const res = await fetch(url, options);
+      const data = await res.json();
       if (data.code === 0) {
         response.value = data.data;
       } else {
@@ -41,11 +41,11 @@ function useApi<T> (url: RequestInfo, data?: any, method: string = 'GET') {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   return {
     response,
-    request
-  }
+    request,
+  };
 }
 
-export { useApi }
+export { useApi };
