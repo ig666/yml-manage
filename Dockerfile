@@ -6,6 +6,8 @@ COPY . /app/
 
 RUN npm i --registry=https://registry.npm.taobao.org
 
+RUN node node_modules/esbuild/install.js
+
 RUN npm run build
 
 FROM nginx:alpine
