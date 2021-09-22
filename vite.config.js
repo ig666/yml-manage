@@ -10,10 +10,21 @@ export default defineConfig({
       '@': resolve(__dirname, './src')
     }
   },
+	css: {
+    preprocessorOptions: {
+      less: {
+        modifyVars: {
+          'border-radius-base': '6px',
+          'primary-color': '#7445c9',
+        },
+        javascriptEnabled: true,
+      }
+    },
+  },
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'http://127.0.0.1:8080',
         rewrite: path => path.replace(/^\/api/, ''),
         changeOrigin: true,
       }

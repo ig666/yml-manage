@@ -1,7 +1,106 @@
 <template>
-  <h1>work release</h1>
+  <div class="work-release">
+    <a-form layout="inline">
+      <a-form-item  label="名称">
+        <a-input v-model:value="formState.name" placeholder="请输入"></a-input>
+      </a-form-item>
+      <a-form-item  label="班级">
+        <a-input v-model:value="formState.class" placeholder="请输入"></a-input>
+      </a-form-item>
+    <a-form-item>
+      <a-button type="primary">搜索</a-button>
+    </a-form-item>
+    </a-form>
+    <a-table :columns="columns" :data-source="data" rowKey="id" :pagination="false" :loading="loading">
+      <template #action="{ record }">
+        <span>
+          <a @click="onCheck(record.id)">查看</a>
+          <a-divider type="vertical" />
+          <a @click="onDelete(record.id)">删除</a>
+        </span>
+      </template>
+    </a-table>
+    <a-pagination v-model:current="pageIndex" :total="total" @change="onPageChange" show-less-items />
+  </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import {ref, UnwrapRef, reactive} from 'vue';
 
-<style scoped></style>
+interface FormState {
+  name: string;
+  class: string;
+}
+
+const columns = [
+  {
+    title: '姓名',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: '年龄',
+    dataIndex: 'age',
+    key: 'age',
+  },
+  {
+    title: '地址',
+    dataIndex: 'address',
+    key: 'address',
+  },
+  {
+    title: '操作',
+    key: 'action',
+    slots: { customRender: 'action' },
+  },
+];
+
+const data = [
+  {
+    id: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+  },
+  {
+    id: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+  },
+  {
+    id: '3',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sidney No. 1 Lake Park',
+  },
+];
+
+const formState: UnwrapRef<FormState> = reactive({
+  name: '',
+  class: '',
+});
+
+const loading = ref<boolean>(false);
+const pageIndex = ref<number>(1);
+const total = ref<number>(20);
+
+const onCheck = (id: string):void => {
+  console.log(id);
+}
+const onDelete = (id: string): void => {
+  console.log(id);
+}
+const onPageChange = (page: number, pageSize: number):void => {
+  console.log(page);
+}
+</script>
+
+<style scoped>
+.work-release .ant-pagination {
+  margin-top: 24px;
+}
+.work-release .ant-form {
+  margin-bottom: 24px;
+}
+</style>
