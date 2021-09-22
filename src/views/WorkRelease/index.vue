@@ -1,17 +1,26 @@
 <template>
   <div class="work-release">
     <a-form layout="inline">
-      <a-form-item  label="名称">
-        <a-input v-model:value="formState.name" placeholder="请输入"></a-input>
+      <a-form-item label="名称">
+        <a-input v-model:value="paramsState.name" placeholder="请输入"></a-input>
       </a-form-item>
-      <a-form-item  label="班级">
-        <a-input v-model:value="formState.class" placeholder="请输入"></a-input>
+      <a-form-item label="班级">
+        <a-input v-model:value="paramsState.class" placeholder="请输入"></a-input>
       </a-form-item>
-    <a-form-item>
-      <a-button type="primary">搜索</a-button>
-    </a-form-item>
+      <a-form-item>
+        <a-button type="primary" @click="onSearch">搜索</a-button>
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary">新增</a-button>
+      </a-form-item>
     </a-form>
-    <a-table :columns="columns" :data-source="data" rowKey="id" :pagination="false" :loading="loading">
+    <a-table
+      :columns="columns"
+      :data-source="data"
+      rowKey="id"
+      :pagination="false"
+      :loading="loading"
+    >
       <template #action="{ record }">
         <span>
           <a @click="onCheck(record.id)">查看</a>
@@ -20,14 +29,19 @@
         </span>
       </template>
     </a-table>
-    <a-pagination v-model:current="pageIndex" :total="total" @change="onPageChange" show-less-items />
+    <a-pagination
+      v-model:current="pageIndex"
+      :total="total"
+      @change="onPageChange"
+      show-less-items
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref, UnwrapRef, reactive} from 'vue';
+import { ref, UnwrapRef, reactive, toRaw } from 'vue';
 
-interface FormState {
+interface paramsState {
   name: string;
   class: string;
 }
@@ -76,7 +90,7 @@ const data = [
   },
 ];
 
-const formState: UnwrapRef<FormState> = reactive({
+const paramsState: UnwrapRef<paramsState> = reactive({
   name: '',
   class: '',
 });
@@ -85,15 +99,19 @@ const loading = ref<boolean>(false);
 const pageIndex = ref<number>(1);
 const total = ref<number>(20);
 
-const onCheck = (id: string):void => {
+const onCheck = (id: string): void => {
   console.log(id);
-}
+};
 const onDelete = (id: string): void => {
   console.log(id);
-}
-const onPageChange = (page: number, pageSize: number):void => {
+};
+const onSearch = ():void => {
+  const params = toRaw(paramsState);
+  loading.value = true;
+};
+const onPageChange = (page: number, pageSize: number): void => {
   console.log(page);
-}
+};
 </script>
 
 <style scoped>
