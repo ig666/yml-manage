@@ -34,9 +34,8 @@ export const getOSSRequestData = async (): UsableOSSRequestData => {
   return { data };
 };
 
-export const useUpload = async (file: FileItem) => {
+export const useUpload = async (file: FileItem, filePath:string = 'exampledir') => {
   const { data } = await getOSSRequestData();
-  console.log(data);
 
   const client = new OSS({
     region: data.value?.region,
@@ -57,6 +56,6 @@ export const useUpload = async (file: FileItem) => {
     },
   });
 
-  const result = await client.put(`exampledir/${file!.name}`, file);
+  const result = await client.put(`${filePath}/${file!.name}`, file);
   return result;
 };
