@@ -1,9 +1,9 @@
 <template>
-  <div class="login">
+  <div class="register">
     <!-- 登录框 -->
     <div class="box">
       <div class="login-box">
-        <div class="title">登录</div>
+        <div class="title">注册</div>
         <a-form class="login-form" :model="formState" :rules="rules" :labelCol="labelCol">
           <a-form-item ref="userName" label="用户名" name="userName">
             <a-input v-model="formState.userName"></a-input>
@@ -11,12 +11,11 @@
           <a-form-item ref="password" label="密码" name="password">
             <a-input type="password" v-model="formState.password"></a-input>
           </a-form-item>
+          <a-form-item ref="rePassword" label="确认密码" name="rePassword">
+            <a-input type="rePassword" v-model="formState.rePassword"></a-input>
+          </a-form-item>
         </a-form>
-        <div class="operate-box">
-          <a-checkbox v-model:checked="rememberMe">记住密码</a-checkbox>
-          <a class="register" @click="goRegister" href="javascript:;">立即注册</a>
-        </div>
-        <a-button @click="onLogin" style="width: 100%; height: 50px;font-size: 20px" type="primary">登录</a-button>
+        <a-button @click="onRegister" style="width: 100%; height: 50px;font-size: 20px" type="primary">立即注册</a-button>
       </div>
     </div>
   </div>
@@ -27,15 +26,15 @@ import { ref, reactive, UnwrapRef, toRaw } from 'vue'
 import { useRouter } from 'vue-router';
 interface FormState {
   userName: String;
-  password: String
+  password: String;
+  rePassword: String
 }
 
 const formState: UnwrapRef<FormState> = reactive({
   userName: '',
-  password: ''
+  password: '',
+  rePassword: ''
 })
-const rememberMe = ref<Boolean>(false)
-
 const labelCol = { span:5 }
 const router = useRouter()
 const rules = {
@@ -47,21 +46,16 @@ const rules = {
   ],
 }
 
-// 登录
-const onLogin = (): void => {
+// 注册
+const onRegister = (): void => {
   const formData = toRaw(formState)
-  console.log(formData, rememberMe.value)
-}
-
-// 跳转注册
-const goRegister = (): void => {
-  router.push({path: '/register'})
+  console.log(formData)
 }
 </script>
 
 <style lang="less" scoped>
-.login{
-  width: 100%;
+.register{
+    width: 100%;
   height: 100%;
   background-image: url("../assets/login.jpg");
   display: flex;
