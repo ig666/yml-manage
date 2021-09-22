@@ -25,6 +25,7 @@
     height: 500px;
     background: rgba(255, 255, 255, .5);
     border-radius: 10px;
+    padding: 20px;
     .title{
       color: #333;
       font-size: 28px;
