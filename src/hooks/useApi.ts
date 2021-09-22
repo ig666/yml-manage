@@ -1,4 +1,5 @@
 import { ref, Ref } from 'vue'
+import { message } from 'ant-design-vue';
 
 export type ApiRequest = () => Promise<void>
 
@@ -32,8 +33,11 @@ function useApi<T> (url: RequestInfo, data?: any, method: string = 'GET') {
     try {
       const res = await fetch(url, options)
       const data = await res.json()
-      response.value = data;
-      return data
+      if (data.code === 0) {
+        response.value = data.data;
+      } else {
+        message.error(data.message);
+      }
     } catch (error) {
       console.log(error);
     }

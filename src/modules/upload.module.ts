@@ -10,6 +10,14 @@ export interface OSSRequestData {
   SecurityToken: string;
 }
 
+export interface FileItem {
+  uid: string;
+  name?: string;
+  status?: string;
+  response?: string;
+  url?: string;
+}
+
 export type UsableOSSRequestData = Promise<{
   data: Ref<OSSRequestData | undefined>;
 }>;
@@ -26,8 +34,9 @@ export const getOSSRequestData = async (): UsableOSSRequestData => {
   return { data };
 };
 
-export const useUpload = async (file: File) => {
+export const useUpload = async (file: FileItem) => {
   const { data } = await getOSSRequestData();
+  console.log(data);
 
   const client = new OSS({
     region: data.value?.region,

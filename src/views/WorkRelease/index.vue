@@ -11,7 +11,7 @@
         <a-button type="primary" @click="onSearch">搜索</a-button>
       </a-form-item>
       <a-form-item>
-        <a-button type="primary">新增</a-button>
+        <a-button type="primary" @click="onAdd">新增</a-button>
       </a-form-item>
     </a-form>
     <a-table
@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 import { ref, UnwrapRef, reactive, toRaw } from 'vue';
+import { useRouter } from "vue-router";
 
 interface paramsState {
   name: string;
@@ -90,15 +91,20 @@ const data = [
   },
 ];
 
+const router = useRouter();
 const paramsState: UnwrapRef<paramsState> = reactive({
   name: '',
   class: '',
 });
-
 const loading = ref<boolean>(false);
 const pageIndex = ref<number>(1);
 const total = ref<number>(20);
 
+const onAdd = ():void => {
+  router.push({
+    path: '/work-release/create',
+  })
+}
 const onCheck = (id: string): void => {
   console.log(id);
 };

@@ -28,6 +28,11 @@ const routes = [
         component: () => import('@/views/WorkRelease/index.vue'),
       },
       {
+        path: '/work-release/create',
+        name: 'work-release-create',
+        component: () => import('@/views/WorkRelease/Form.vue'),
+      },
+      {
         path: '/work-mark',
         name: 'work-mark',
         component: () => import('@/views/WorkMark/index.vue'),
