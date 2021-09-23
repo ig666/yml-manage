@@ -4,12 +4,12 @@
     <div class="box">
       <div class="login-box">
         <div class="title">登录</div>
-        <a-form class="login-form" :model="formState" :rules="rules" :labelCol="labelCol">
-          <a-form-item ref="userName" label="用户名" name="userName">
-            <a-input v-model="formState.userName"></a-input>
+        <a-form ref="formRef" class="login-form" :model="formState" :rules="rules" :labelCol="labelCol">
+          <a-form-item ref="account" label="用户名" name="account">
+            <a-input v-model:value="formState.account"></a-input>
           </a-form-item>
           <a-form-item ref="password" label="密码" name="password">
-            <a-input type="password" v-model="formState.password"></a-input>
+            <a-input type="password" v-model:value="formState.password"></a-input>
           </a-form-item>
         </a-form>
         <div class="operate-box">
@@ -23,34 +23,48 @@
 </template>
 
 <script setup lang="ts">
+import { RuleObject, ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
 import { ref, reactive, UnwrapRef, toRaw } from 'vue'
+import { message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
+import { useLogin } from '../modules/account.module'
 interface FormState {
-  userName: String;
+  account: String;
   password: String
 }
 
 const formState: UnwrapRef<FormState> = reactive({
-  userName: '',
+  account: '',
   password: ''
 })
 const rememberMe = ref<boolean>(false)
 
+const formRef = ref();
 const labelCol = { span:5 }
 const router = useRouter()
 const rules = {
-  userName: [
-    { required: true, message: '请输入用户名', trigger: 'blur' }
+  account: [
+    { required: true, message: '请输入用户名', trigger: 'change' }
   ],
   password: [
-    { required: true, message: '请输入密码', trigger: 'blur' }
+    { required: true, message: '请输入密码', trigger: 'change' }
   ],
 }
 
 // 登录
 const onLogin = (): void => {
-  const formData = toRaw(formState)
-  console.log(formData, rememberMe.value)
+  formRef.value.validate().then(async () => {
+    const formData = toRaw(formState)
+    console.log(formData)
+    const {account} = await useLogin(formData)
+    if (account.value) {
+      console.log(account)
+      message.success('登录成功')
+      router.replace({path: '/'})
+    }
+  }).catch((error: ValidateErrorEntity<FormState>) => {
+    console.log('error', error);
+  })
 }
 
 // 跳转注册
