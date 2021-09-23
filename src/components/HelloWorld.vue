@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed, ref, watch, inject, provide } from 'vue';
+import { reactive, computed, ref, watch } from 'vue';
 
 type DState = {
   count: number;
@@ -16,9 +16,6 @@ type DState = {
 defineProps({
   msg: String,
 });
-
-const name = inject('name');
-console.log('name', name);
 
 const state: DState = reactive({
   count: 0,

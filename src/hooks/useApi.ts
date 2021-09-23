@@ -1,8 +1,8 @@
 import { ref, Ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 
 export type ApiRequest = () => Promise<void>;
-
 export interface UsableAPI<T> {
   response: Ref<T | undefined>;
   request: ApiRequest;
@@ -33,11 +33,19 @@ function useApi<T>(url: RequestInfo, data?: any, method: string = 'GET') {
     try {
       const res = await fetch(url, options);
       const data = await res.json();
-      if (data.code === 0) {
-        response.value = data.data;
-      } else {
-        message.error(data.message);
+      switch (data.code) {
+        case 0:
+          response.value = data.data;
+          break;
+        case 401:
+          message.error('登陆已过期，请重新登陆！');
+          const router = useRouter();
+          router.push({ path: '/login' });
+          break;
+        default:
+          message.error(data.message);
       }
+      return data;
     } catch (error) {
       console.log(error);
     }

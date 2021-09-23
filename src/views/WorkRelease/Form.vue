@@ -99,7 +99,7 @@ const uploadLoading = ref<boolean>(false);
 
 const onSubmit = (): void => {
   const data = toRaw(formState);
-  console.log(data);
+  console.log(data.date?.format('YYYY-MM-DD'));
 };
 
 const onDelete = (index: number): void => {
