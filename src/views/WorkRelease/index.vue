@@ -9,9 +9,7 @@
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSearch">搜索</a-button>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" @click="onAdd">新增</a-button>
+        <a-button style="margin-left: 8px;" type="primary" @click="onAdd">新增</a-button>
       </a-form-item>
     </a-form>
     <a-table

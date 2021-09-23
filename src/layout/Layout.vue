@@ -1,7 +1,10 @@
 <template>
   <a-layout>
     <a-layout-sider
-      :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
+      breakpoint="lg"
+      collapsed-width="0"
+      @collapse="onCollapse"
+      @breakpoint="onBreakpoint"
     >
       <div class="logo" />
       <a-menu
@@ -16,7 +19,7 @@
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
-    <a-layout :style="{ marginLeft: '200px' }">
+    <a-layout>
       <a-layout-header :style="{ background: '#fff', padding: 0 }" />
       <a-layout-content :style="{ margin: '24px 16px 0', overflow: 'initial' }">
         <div
@@ -24,6 +27,7 @@
             padding: '24px',
             background: '#fff',
             minHeight: 'calc(100vh - 158px)',
+            overflow: 'auto',
           }"
         >
           <router-view />
@@ -38,7 +42,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from "vue-router";
+import { useRouter } from 'vue-router';
 import {
   UserOutlined,
   VideoCameraOutlined,
@@ -82,7 +86,14 @@ const selectedKeys = ref<string[]>([path]);
 const selectMenu = ({ key }: { key: any }): void => {
   router.push({
     path: key,
-  })
+  });
+};
+
+const onBreakpoint = (broken: boolean) => {
+  console.log(broken);
+};
+const onCollapse = (collapsed: boolean, type: string) => {
+  console.log(collapsed, type);
 };
 </script>
 
