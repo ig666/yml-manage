@@ -34,7 +34,7 @@ const formState: UnwrapRef<FormState> = reactive({
   userName: '',
   password: ''
 })
-const rememberMe = ref<Boolean>(false)
+const rememberMe = ref<boolean>(false)
 
 const labelCol = { span:5 }
 const router = useRouter()
