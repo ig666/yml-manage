@@ -1,6 +1,7 @@
 import { ref, Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
+import NProgress from "nprogress";
 
 export type ApiRequest = () => Promise<void>;
 export interface UsableAPI<T> {
@@ -31,8 +32,10 @@ function useApi<T>(url: RequestInfo, data?: any, method: string = 'GET') {
   const response: Ref<T | undefined> = ref();
   const request = async () => {
     try {
+      NProgress.start();
       const res = await fetch(url, options);
       const data = await res.json();
+      NProgress.done();
       switch (data.code) {
         case 0:
           response.value = data.data;

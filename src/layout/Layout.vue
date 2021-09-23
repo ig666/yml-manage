@@ -27,10 +27,13 @@
             padding: '24px',
             background: '#fff',
             minHeight: 'calc(100vh - 158px)',
-            overflow: 'auto',
           }"
         >
-          <router-view />
+          <router-view v-slot="{ Component }">
+            <transition mode="out-in" name="fade-transform">
+              <component :is="Component" />
+            </transition>
+          </router-view>
         </div>
       </a-layout-content>
       <a-layout-footer :style="{ textAlign: 'center' }">
