@@ -20,7 +20,27 @@
       </a-menu>
     </a-layout-sider>
     <a-layout>
-      <a-layout-header :style="{ background: '#fff', padding: 0 }" />
+      <a-layout-header :style="{ background: '#fff', padding: 0 }">
+        <nav-bar>
+          <template #right>
+            <a-dropdown>
+              <div style="cursor: pointer">
+                <span style="margin-right: 8px">@cc</span>
+                <a-avatar
+                  src="http://m.imeitou.com/uploads/allimg/2020052715/ihzlr0erues.jpeg"
+                />
+              </div>
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item>
+                    <a href="javascript:;" @click="onLogout">退出登陆</a>
+                  </a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
+          </template>
+        </nav-bar>
+      </a-layout-header>
       <a-layout-content :style="{ margin: '24px 16px 0', overflow: 'initial' }">
         <div
           :style="{
@@ -56,6 +76,7 @@ import {
   TeamOutlined,
   ShopOutlined,
 } from '@ant-design/icons-vue';
+import NavBar from './components/NavBar.vue';
 
 type MenuList = {
   key: string;
@@ -98,9 +119,12 @@ const onBreakpoint = (broken: boolean) => {
 const onCollapse = (collapsed: boolean, type: string) => {
   console.log(collapsed, type);
 };
+const onLogout = () => {
+  router.push({ path: '/login' });
+};
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .ant-layout-sider-children .logo {
   height: 32px;
   background: rgba(255, 255, 255, 0.2);
