@@ -9,11 +9,14 @@ export interface UsableAPI<T> {
   request: ApiRequest;
 }
 
+const noTokenUrl:RequestInfo[] = ['/api/GetAliossTokens', '/api/account/login', '/api/account/register']
 function useApi<T>(url: RequestInfo, data?: any, method: string = 'GET') {
   let options: RequestInit = {};
   const token:string = localStorage.getItem('token')!;
   const headers = new Headers();
-  headers.append('Authorization', token);
+  if (!noTokenUrl.includes(url)) {
+    headers.append('Authorization', token);
+  }
 
   if (method === 'GET' || method === 'DELETE') {
     const params = data;
@@ -28,6 +31,7 @@ function useApi<T>(url: RequestInfo, data?: any, method: string = 'GET') {
     headers.append('content-type', 'application/json');
     options.body = JSON.stringify(data);
   }
+
   options.method = method;
   options.headers = headers;
   const response: Ref<T | undefined> = ref();
@@ -45,6 +49,7 @@ function useApi<T>(url: RequestInfo, data?: any, method: string = 'GET') {
         case 401:
           message.error('登陆已过期，请重新登陆！');
           const router = useRouter();
+          localStorage.removeItem('token');
           router.push({ path: '/login' });
           break;
         default:
