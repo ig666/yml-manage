@@ -4,106 +4,120 @@
     <div class="box">
       <div class="login-box">
         <div class="title">登录</div>
-        <a-form ref="formRef" class="login-form" :model="formState" :rules="rules" :labelCol="labelCol">
+        <a-form
+          ref="formRef"
+          class="login-form"
+          :model="formState"
+          :rules="rules"
+          :labelCol="labelCol"
+        >
           <a-form-item ref="account" label="用户名" name="account">
             <a-input v-model:value="formState.account"></a-input>
           </a-form-item>
           <a-form-item ref="password" label="密码" name="password">
-            <a-input type="password" v-model:value="formState.password"></a-input>
+            <a-input
+              type="password"
+              v-model:value="formState.password"
+            ></a-input>
           </a-form-item>
         </a-form>
         <div class="operate-box">
           <a-checkbox v-model:checked="rememberMe">记住密码</a-checkbox>
-          <a class="register" @click="goRegister" href="javascript:;">立即注册</a>
+          <a class="register" @click="goRegister" href="javascript:;"
+            >立即注册</a
+          >
         </div>
-        <a-button @click="onLogin" style="width: 100%; height: 50px;font-size: 20px" type="primary">登录</a-button>
+        <a-button
+          @click="onLogin"
+          style="width: 100%; height: 50px; font-size: 20px"
+          type="primary"
+          >登录</a-button
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { RuleObject, ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
-import { ref, reactive, UnwrapRef, toRaw } from 'vue'
+import {
+  RuleObject,
+  ValidateErrorEntity,
+} from 'ant-design-vue/es/form/interface';
+import { ref, reactive, UnwrapRef, toRaw } from 'vue';
 import { message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
-import { useLogin } from '../modules/account.module'
+import { useLogin } from '../modules/account.module';
 interface FormState {
-  account: String;
-  password: String
+  account: string;
+  password: string;
 }
 
 const formState: UnwrapRef<FormState> = reactive({
   account: '',
-  password: ''
-})
-const rememberMe = ref<boolean>(false)
+  password: '',
+});
+const rememberMe = ref<boolean>(false);
 
 const formRef = ref();
-const labelCol = { span:5 }
-const router = useRouter()
+const labelCol = { span: 5 };
+const router = useRouter();
 const rules = {
-  account: [
-    { required: true, message: '请输入用户名', trigger: 'change' }
-  ],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'change' }
-  ],
-}
+  account: [{ required: true, message: '请输入用户名', trigger: 'change' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'change' }],
+};
 
 // 登录
 const onLogin = (): void => {
-  formRef.value.validate().then(async () => {
-    const formData = toRaw(formState)
-    console.log(formData)
-    const {account} = await useLogin(formData)
-    if (account.value) {
-      console.log(account)
-      message.success('登录成功')
-      router.replace({path: '/'})
-    }
-  }).catch((error: ValidateErrorEntity<FormState>) => {
-    console.log('error', error);
-  })
-}
+  formRef.value
+    .validate()
+    .then(async () => {
+      const formData = toRaw(formState);
+      const { account } = await useLogin(formData);
+      if (account.value) {
+        message.success('登录成功');
+        router.replace({ path: '/' });
+        localStorage.setItem('token', account.value.token);
+      }
+    })
+    .catch((error: ValidateErrorEntity<FormState>) => {
+      console.log('error', error);
+    });
+};
 
 // 跳转注册
 const goRegister = (): void => {
-  router.push({path: '/register'})
-}
+  router.push({ path: '/register' });
+};
 </script>
 
 <style lang="less" scoped>
-.login{
+.login {
   width: 100%;
   height: 100%;
-  background-image: url("../assets/login.jpg");
+  background-image: url('../assets/login.jpg');
   display: flex;
   justify-content: center;
   align-items: center;
-  .login-box{
+  .login-box {
     width: 500px;
     height: 400px;
-    background: rgba(255, 255, 255, .5);
+    background: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
     padding: 20px 60px;
-    .title{
+    .title {
       color: #333;
       font-size: 28px;
       font-weight: bold;
       text-align: center;
     }
-    .login-form{
+    .login-form {
       margin-top: 50px;
     }
-    .operate-box{
+    .operate-box {
       padding: 0 20px;
       display: flex;
       justify-content: space-between;
       margin: 20px 0;
-      .register{
-
-      }
     }
   }
 }

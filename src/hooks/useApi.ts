@@ -11,6 +11,10 @@ export interface UsableAPI<T> {
 
 function useApi<T>(url: RequestInfo, data?: any, method: string = 'GET') {
   let options: RequestInit = {};
+  const token:string = localStorage.getItem('token')!;
+  const headers = new Headers();
+  headers.append('Authorization', token);
+
   if (method === 'GET' || method === 'DELETE') {
     const params = data;
     if (params) {
@@ -21,19 +25,17 @@ function useApi<T>(url: RequestInfo, data?: any, method: string = 'GET') {
       url += '?' + paramsArray.join('&');
     }
   } else {
-    options = {
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    };
+    headers.append('content-type', 'application/json');
+    options.body = JSON.stringify(data);
   }
   options.method = method;
+  options.headers = headers;
   const response: Ref<T | undefined> = ref();
   const request = async () => {
     try {
       NProgress.start();
       const res = await fetch(url, options);
+      if (res.status !== 200) { return };
       const data = await res.json();
       NProgress.done();
       switch (data.code) {
