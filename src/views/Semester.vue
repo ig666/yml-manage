@@ -108,7 +108,7 @@ import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
 import { Moment } from 'moment';
 import moment from 'moment';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
-import { message } from 'ant-design-vue';
+import { notification } from 'ant-design-vue';
 import {
   getSemesterInfo,
   createSemester,
@@ -256,6 +256,7 @@ const onConfirmDelete = async (id: string) => {
   loading.value = true;
   const res = await deleteSemester(id);
   if (res.code === 0) {
+    notification.success({ message: '删除成功' });
     pageIndex.value = 1;
     getSemesterList();
   }
@@ -293,7 +294,9 @@ const onModalConfirm = () => {
           : await updateSemester(data);
       confirmLoading.value = false;
       if (res && res.code === 0) {
-        message.success(modalType.value === 'add' ? '新增成功' : '编辑成功');
+        notification.success({
+          message: modalType.value === 'add' ? '新增成功' : '编辑成功'
+        });
         pageIndex.value = 1;
         paramsState.semesterName = '';
         visible.value = false;
