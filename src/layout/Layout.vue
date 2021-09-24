@@ -84,10 +84,10 @@ type MenuList = {
 }[];
 
 const menuList: MenuList = [
-  {
-    key: '/home',
-    name: '首页',
-  },
+  // {
+  //   key: '/home',
+  //   name: '首页',
+  // },
   {
     key: '/person',
     name: '学员管理',
@@ -99,6 +99,10 @@ const menuList: MenuList = [
   {
     key: '/work-mark',
     name: '作业批改',
+  },
+  {
+    key: '/class',
+    name: '班级管理'
   },
 ];
 

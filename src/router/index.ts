@@ -3,44 +3,49 @@ import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router
 const routes = [
   {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     component: () => import('@/views/Login.vue'),
   },
   {
     path: '/register',
-    name: 'register',
+    name: 'Register',
     component: () => import('@/views/Register.vue'),
   },
   {
     path: '/',
-    name: 'layout',
+    name: 'Layout',
     component: () => import("@/layout/Layout.vue"),
-    redirect: '/home',
+    redirect: '/person',
     children: [
-      {
-        path: '/home',
-        name: 'home',
-        component: () => import('@/views/Home.vue'),
-      },
+      // {
+      //   path: '/home',
+      //   name: 'home',
+      //   component: () => import('@/views/Home.vue'),
+      // },
       {
         path: '/person',
-        name: 'person',
-        component: () => import('@/views/Person/index.vue'),
+        name: 'Person',
+        component: () => import('@/views/Person/List.vue'),
       },
       {
         path: '/work-release',
-        name: 'work-release',
-        component: () => import('@/views/WorkRelease/index.vue'),
+        name: 'WorkRelease',
+        component: () => import('@/views/WorkRelease/List.vue'),
       },
       {
         path: '/work-release/create',
-        name: 'work-release-create',
+        name: 'WorkReleaseCreate',
         component: () => import('@/views/WorkRelease/Form.vue'),
       },
       {
         path: '/work-mark',
-        name: 'work-mark',
-        component: () => import('@/views/WorkMark/index.vue'),
+        name: 'WorkMark',
+        component: () => import('@/views/WorkMark/List.vue'),
+      },
+      {
+        path: '/class',
+        name: 'Class',
+        component: () => import('@/views/Class.vue'),
       },
     ]
   },
