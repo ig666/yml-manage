@@ -101,8 +101,8 @@ const menuList: MenuList = [
     name: '作业批改',
   },
   {
-    key: '/class',
-    name: '班级管理'
+    key: '/semester',
+    name: '学期管理'
   },
 ];
 

@@ -40,7 +40,7 @@
 import { ref, UnwrapRef, reactive, toRaw } from 'vue';
 import { useRouter } from "vue-router";
 
-interface paramsState {
+interface ParamsState {
   name: string;
   class: string;
 }
@@ -90,7 +90,7 @@ const data = [
 ];
 
 const router = useRouter();
-const paramsState: UnwrapRef<paramsState> = reactive({
+const paramsState: UnwrapRef<ParamsState> = reactive({
   name: '',
   class: '',
 });

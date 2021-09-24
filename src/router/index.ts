@@ -43,9 +43,9 @@ const routes = [
         component: () => import('@/views/WorkMark/List.vue'),
       },
       {
-        path: '/class',
-        name: 'Class',
-        component: () => import('@/views/Class.vue'),
+        path: '/semester',
+        name: 'Semester',
+        component: () => import('@/views/Semester.vue'),
       },
     ]
   },
