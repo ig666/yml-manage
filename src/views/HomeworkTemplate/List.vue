@@ -2,11 +2,14 @@
   <div class="homework-template">
     <a-form layout="inline">
       <a-form-item label="标题">
-        <a-input v-model:value="paramsState.describe" placeholder="请输入"></a-input>
+        <a-input
+          v-model:value="paramsState.describe"
+          placeholder="请输入"
+        ></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSearch">搜索</a-button>
-        <a-button style="margin-left: 8px;" @click="onAdd">新增</a-button>
+        <a-button style="margin-left: 8px" @click="onAdd">新增</a-button>
       </a-form-item>
     </a-form>
     <a-table
@@ -54,7 +57,13 @@
       >
         <a-form-item label="学期" name="semesterId">
           <a-select v-model:value="formState.semesterId">
-            <a-select-option v-for="item in semesters" :value="item.id" :key="item.id" :disabled="isSemesterDisabled(item.homeWorks)">{{item.semesterName}}</a-select-option>
+            <a-select-option
+              v-for="item in semesters"
+              :value="item.id"
+              :key="item.id"
+              :disabled="isSemesterDisabled(item.homeWorks)"
+              >{{ item.semesterName }}</a-select-option
+            >
           </a-select>
         </a-form-item>
       </a-form>
@@ -64,46 +73,36 @@
 
 <script setup lang="ts">
 import { ref, UnwrapRef, reactive, toRaw } from 'vue';
-import { useRouter } from "vue-router";
+import { useRouter } from 'vue-router';
 import { message, notification } from 'ant-design-vue';
-import { getSemesterListByPage, Semester } from '../../modules/semester.module'
-import { getHomeworkTemplateListByPage, deleteHomeworkTemplate, RequestParams, HomeworkTemplate, PushHomework, pushHomework } from '../../modules/homework-template.modules'
+import { columns } from './table';
+import { getSemesterListByPage, Semester } from '../../modules/semester.module';
+import {
+  getHomeworkTemplateListByPage,
+  deleteHomeworkTemplate,
+  RequestParams,
+  HomeworkTemplate,
+  PushHomework,
+  pushHomework,
+} from '../../modules/homework-template.modules';
 import moment from 'moment';
 
 interface ParamsState {
   describe: string;
 }
 
-const columns = [
-  {
-    title: '标题',
-    dataIndex: 'describe',
-  },
-  {
-    title: '备注',
-    dataIndex: 'remark',
-  },
-  {
-    title: '创建时间',
-    dataIndex: 'createTime',
-    key: 'createTime',
-    slots: { customRender: 'createTime' },
-  },
-  {
-    title: '操作',
-    key: 'action',
-    slots: { customRender: 'action' },
-  },
-];
-
 const router = useRouter();
-
 
 const labelCol = { span: 4 };
 const wrapperCol = { span: 18 };
 const rules = {
   semesterId: [
-    { required: true, message: '请选择学期', trigger: 'change', type: 'string', },
+    {
+      required: true,
+      message: '请选择学期',
+      trigger: 'change',
+      type: 'string',
+    },
   ],
 };
 const paramsState: UnwrapRef<ParamsState> = reactive({
@@ -112,7 +111,7 @@ const paramsState: UnwrapRef<ParamsState> = reactive({
 const formState: UnwrapRef<PushHomework> = reactive({
   homeworkId: '',
   semesterId: '',
-})
+});
 const semesters = ref<Semester[] | undefined>([]);
 const homeworkTemplates = ref<HomeworkTemplate[] | undefined>([]);
 const loading = ref<boolean>(false);
@@ -123,11 +122,11 @@ const visible = ref<boolean>(false);
 const confirmLoading = ref<boolean>(false);
 const formRef = ref();
 
-const onAdd = ():void => {
+const onAdd = (): void => {
   router.push({
     path: '/homework-template/create',
   });
-}
+};
 
 const onRelease = (id: string): void => {
   formState.homeworkId = id;
@@ -160,7 +159,7 @@ const onModalConfirm = () => {
 
 const onDelete = async (id: string) => {
   loading.value = true;
-  const res = await deleteHomeworkTemplate({ids: [id]});
+  const res = await deleteHomeworkTemplate({ ids: [id] });
   if (res.code === 0) {
     notification.success({ message: '删除成功!' });
     pageIndex.value = 1;
@@ -168,7 +167,7 @@ const onDelete = async (id: string) => {
   }
 };
 
-const onSearch = ():void => {
+const onSearch = (): void => {
   getHomeworkTemplateList();
 };
 
@@ -177,7 +176,10 @@ const onPageChange = (page: number, pageSize: number): void => {
 };
 
 const getSemesterList = async () => {
-  const { data:result } = await getSemesterListByPage({pageIndex: 1, pageSize: 999});
+  const { data: result } = await getSemesterListByPage({
+    pageIndex: 1,
+    pageSize: 999,
+  });
   semesters.value = result.value!.list;
 };
 
@@ -192,9 +194,9 @@ const getHomeworkTemplateList = async () => {
   loading.value = false;
   homeworkTemplates.value = result.value?.list;
   total.value = result.value!.total;
-}
+};
 
-const formatDate = (date:string): string => {
+const formatDate = (date: string): string => {
   return moment(date).format('YYYY-MM-DD HH:mm:ss');
 };
 

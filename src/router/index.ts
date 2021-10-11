@@ -43,6 +43,11 @@ const routes = [
         component: () => import('@/views/Homework/List.vue'),
       },
       {
+        path: '/homework/check',
+        name: 'HomeworkCheck',
+        component: () => import('@/views/Homework/Check.vue'),
+      },
+      {
         path: '/semester',
         name: 'Semester',
         component: () => import('@/views/Semester.vue'),
