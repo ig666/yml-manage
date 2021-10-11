@@ -53,7 +53,7 @@ import ImageEditor from "tui-image-editor";
 
 const homeworks = ref([
   {
-    photoUrl: 'http://yameila.oss-cn-beijing.aliyuncs.com/exampledir/%E4%B8%8B%E8%BD%BD.jpg',
+    photoUrl: 'http://yameila.oss-cn-beijing.aliyuncs.com/exampledir/WechatIMG5070.jpeg',
     photoDescript: '123',
   }
 ]);
@@ -73,7 +73,7 @@ const onEdit = async (url:string) => {
       },
       locale: locale_zh,
       initMenu: "draw",
-      menuBarPosition: "bottom",
+      menuBarPosition: "right",
     },
   })
 };
