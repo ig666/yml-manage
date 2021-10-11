@@ -118,10 +118,10 @@ const selectMenu = ({ key }: { key: any }): void => {
 };
 
 const onBreakpoint = (broken: boolean) => {
-  console.log(broken);
+  // console.log(broken);
 };
 const onCollapse = (collapsed: boolean, type: string) => {
-  console.log(collapsed, type);
+  // console.log(collapsed, type);
 };
 const onLogout = () => {
   router.push({ path: '/login' });
