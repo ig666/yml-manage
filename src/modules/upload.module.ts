@@ -23,7 +23,7 @@ export type UsableOSSRequestData = Promise<{
 }>;
 export const getOSSRequestData = async (): UsableOSSRequestData => {
   const { request, response: data } = useApi<OSSRequestData>(
-    '/api/GetAliossTokens'
+    '/api/alioss/GetAliossTokens'
   );
   const loaded = ref<boolean>(false);
   if (loaded.value === false) {

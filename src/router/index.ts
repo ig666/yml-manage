@@ -15,7 +15,7 @@ const routes = [
     path: '/',
     name: 'Layout',
     component: () => import("@/layout/Layout.vue"),
-    redirect: '/person',
+    redirect: '/login',
     children: [
       // {
       //   path: '/home',

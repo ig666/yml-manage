@@ -11,7 +11,6 @@ export interface UsableAPI<T> {
 }
 
 const noTokenUrl: RequestInfo[] = [
-  '/api/GetAliossTokens',
   '/api/account/login',
   '/api/account/register',
 ];

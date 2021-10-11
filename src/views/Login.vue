@@ -75,7 +75,7 @@ const onLogin = (): void => {
       const { account } = await useLogin(formData);
       if (account.value) {
         message.success('登录成功');
-        router.replace({ path: '/' });
+        router.replace({ path: '/person' });
         localStorage.setItem('token', account.value.token);
       }
     })
