@@ -16,6 +16,7 @@ export interface FileItem {
   status?: string;
   response?: string;
   url?: string;
+  type: string;
 }
 
 export type UsableOSSRequestData = Promise<{

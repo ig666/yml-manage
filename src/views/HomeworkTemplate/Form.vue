@@ -15,7 +15,7 @@
             </template>
             <a-card-meta title="描述">
               <template #description>
-                <a-input v-model="item.photoDescript"></a-input>
+                <a-input v-model:value="item.photoDescript"></a-input>
                 <div
                   class="operates"
                   style="margin-top: 8px; text-align: right"
@@ -125,6 +125,11 @@ const onBack = () => {
 };
 
 const uploadFile = async (file: FileItem) => {
+  const fileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+  if (!fileTypes.includes(file.type)) {
+    message.error('请上传jpg、png格式图片!')
+    return;
+  }
   uploadLoading.value = true;
   const { res, url } = await useUpload(file);
   if (res.status === 200) {
