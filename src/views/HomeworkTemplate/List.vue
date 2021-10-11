@@ -39,6 +39,7 @@
 <script setup lang="ts">
 import { ref, UnwrapRef, reactive, toRaw } from 'vue';
 import { useRouter } from "vue-router";
+import { getSemesterListByPage, Semester } from '../../modules/semester.module'
 
 interface ParamsState {
   name: string;
@@ -94,13 +95,14 @@ const paramsState: UnwrapRef<ParamsState> = reactive({
   name: '',
   class: '',
 });
+const semesters = ref<Semester[] | undefined>([]);
 const loading = ref<boolean>(false);
 const pageIndex = ref<number>(1);
 const total = ref<number>(20);
 
 const onAdd = ():void => {
   router.push({
-    path: '/work-release/create',
+    path: '/homework-template/create',
   })
 }
 const onCheck = (id: string): void => {
@@ -116,6 +118,15 @@ const onSearch = ():void => {
 const onPageChange = (page: number, pageSize: number): void => {
   console.log(page);
 };
+
+const getSemesterList = async () => {
+  const { data:result } = await getSemesterListByPage({pageIndex: 1, pageSize: 999});
+  semesters.value = result.value!.list;
+};
+
+onMounted: {
+  getSemesterList();
+}
 </script>
 
 <style scoped>

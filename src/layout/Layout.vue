@@ -93,12 +93,12 @@ const menuList: MenuList = [
     name: '学员管理',
   },
   {
-    key: '/work-release',
-    name: '作业发布',
+    key: '/homework-template',
+    name: '作业模版管理',
   },
   {
-    key: '/work-mark',
-    name: '作业批改',
+    key: '/homework',
+    name: '作业管理',
   },
   {
     key: '/semester',

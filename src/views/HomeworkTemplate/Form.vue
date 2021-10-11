@@ -42,24 +42,11 @@
             <a-button :loading="uploadLoading">上传图片</a-button>
           </a-upload>
         </a-form-item>
-        <a-form-item label="班级">
-          <a-select ref="select" v-model:value="formState.class">
-            <a-select-option value="jack">Jack</a-select-option>
-            <a-select-option value="lucy">Lucy</a-select-option>
-            <a-select-option value="disabled" disabled
-              >Disabled</a-select-option
-            >
-            <a-select-option value="Yiminghe">yiminghe</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="推送日期">
-          <a-date-picker v-model:value="formState.date" style="width: 100%" />
-        </a-form-item>
-        <a-form-item label="推送时间">
-          <a-time-picker v-model:value="formState.time" style="width: 100%" />
+        <a-form-item label="备注">
+          <a-input></a-input>
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-          <a-button type="primary" @click="onSubmit">发布作业</a-button>
+          <a-button type="primary" @click="onSubmit">保存</a-button>
           <a-button @click="onBack" style="margin-left: 8px">返回</a-button>
         </a-form-item>
       </a-form>
@@ -68,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRaw, UnwrapRef } from 'vue';
+import { ref, reactive, toRaw, UnwrapRef, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { Moment } from 'moment';
 import { useUpload, FileItem } from '../../modules/upload.module';

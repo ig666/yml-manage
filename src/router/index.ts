@@ -28,19 +28,19 @@ const routes = [
         component: () => import('@/views/Person/List.vue'),
       },
       {
-        path: '/work-release',
-        name: 'WorkRelease',
-        component: () => import('@/views/WorkRelease/List.vue'),
+        path: '/homework-template',
+        name: 'HomeworkTemplate',
+        component: () => import('@/views/HomeworkTemplate/List.vue'),
       },
       {
-        path: '/work-release/create',
-        name: 'WorkReleaseCreate',
-        component: () => import('@/views/WorkRelease/Form.vue'),
+        path: '/homework-template/create',
+        name: 'HomeworkTemplateCreate',
+        component: () => import('@/views/HomeworkTemplate/Form.vue'),
       },
       {
-        path: '/work-mark',
-        name: 'WorkMark',
-        component: () => import('@/views/WorkMark/List.vue'),
+        path: '/homework',
+        name: 'Homework',
+        component: () => import('@/views/Homework/List.vue'),
       },
       {
         path: '/semester',
