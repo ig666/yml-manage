@@ -43,6 +43,7 @@
       v-model:visible="visible"
       :confirm-loading="confirmLoading"
       @ok="onModalConfirm"
+      @cancel="onModalCancel"
     >
       <a-form
         ref="formRef"
@@ -53,7 +54,7 @@
       >
         <a-form-item label="学期" name="semesterId">
           <a-select v-model:value="formState.semesterId">
-            <a-select-option v-for="item in semesters" :value="item.id" :key="item.id">{{item.semesterName}}</a-select-option>
+            <a-select-option v-for="item in semesters" :value="item.id" :key="item.id" :disabled="isSemesterDisabled(item.homeWorks)">{{item.semesterName}}</a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
@@ -130,7 +131,17 @@ const onAdd = ():void => {
 
 const onRelease = (id: string): void => {
   formState.homeworkId = id;
+  getSemesterList();
   visible.value = true;
+};
+
+const isSemesterDisabled = (homeworks: any) => {
+  return homeworks.some((item: any) => formState.homeworkId === item.id);
+};
+
+const onModalCancel = () => {
+  formState.homeworkId = '';
+  formRef.value.resetFields();
 };
 
 const onModalConfirm = () => {
@@ -142,6 +153,7 @@ const onModalConfirm = () => {
       notification.success({ message: '发布成功!' });
       visible.value = false;
       formState.homeworkId = '';
+      formRef.value.resetFields();
     }
   });
 };
@@ -187,7 +199,6 @@ const formatDate = (date:string): string => {
 };
 
 onMounted: {
-  getSemesterList();
   getHomeworkTemplateList();
 }
 </script>
