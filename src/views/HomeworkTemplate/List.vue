@@ -1,29 +1,34 @@
 <template>
-  <div class="work-release">
+  <div class="homework-template">
     <a-form layout="inline">
-      <a-form-item label="名称">
-        <a-input v-model:value="paramsState.name" placeholder="请输入"></a-input>
-      </a-form-item>
-      <a-form-item label="班级">
-        <a-input v-model:value="paramsState.class" placeholder="请输入"></a-input>
+      <a-form-item label="标题">
+        <a-input v-model:value="paramsState.describe" placeholder="请输入"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSearch">搜索</a-button>
-        <a-button style="margin-left: 8px;" type="primary" @click="onAdd">新增</a-button>
+        <a-button style="margin-left: 8px;" @click="onAdd">新增</a-button>
       </a-form-item>
     </a-form>
     <a-table
       :columns="columns"
-      :data-source="data"
+      :data-source="homeworkTemplates"
       rowKey="id"
       :pagination="false"
       :loading="loading"
     >
+      <template #createTime="{ record }">
+        <span>{{ formatDate(record.createTime) }}</span>
+      </template>
       <template #action="{ record }">
         <span>
-          <a @click="onCheck(record.id)">查看</a>
+          <a @click="onRelease(record.id)">发布</a>
           <a-divider type="vertical" />
-          <a @click="onDelete(record.id)">删除</a>
+          <a-popconfirm
+            title="确认删除当前作业模版？"
+            @confirm="onDelete(record.id)"
+          >
+            <a href="#">删除</a>
+          </a-popconfirm>
         </span>
       </template>
     </a-table>
@@ -33,34 +38,55 @@
       @change="onPageChange"
       show-less-items
     />
+    <a-modal
+      title="发布作业"
+      v-model:visible="visible"
+      :confirm-loading="confirmLoading"
+      @ok="onModalConfirm"
+    >
+      <a-form
+        ref="formRef"
+        :rules="rules"
+        :model="formState"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+      >
+        <a-form-item label="学期" name="semesterId">
+          <a-select v-model:value="formState.semesterId">
+            <a-select-option v-for="item in semesters" :value="item.id" :key="item.id">{{item.semesterName}}</a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, UnwrapRef, reactive, toRaw } from 'vue';
 import { useRouter } from "vue-router";
+import { message, notification } from 'ant-design-vue';
 import { getSemesterListByPage, Semester } from '../../modules/semester.module'
+import { getHomeworkTemplateListByPage, deleteHomeworkTemplate, RequestParams, HomeworkTemplate, PushHomework, pushHomework } from '../../modules/homework-template.modules'
+import moment from 'moment';
 
 interface ParamsState {
-  name: string;
-  class: string;
+  describe: string;
 }
 
 const columns = [
   {
-    title: '姓名',
-    dataIndex: 'name',
-    key: 'name',
+    title: '标题',
+    dataIndex: 'describe',
   },
   {
-    title: '年龄',
-    dataIndex: 'age',
-    key: 'age',
+    title: '备注',
+    dataIndex: 'remark',
   },
   {
-    title: '地址',
-    dataIndex: 'address',
-    key: 'address',
+    title: '创建时间',
+    dataIndex: 'createTime',
+    key: 'createTime',
+    slots: { customRender: 'createTime' },
   },
   {
     title: '操作',
@@ -69,54 +95,73 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    id: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-  },
-  {
-    id: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-  },
-  {
-    id: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-  },
-];
-
 const router = useRouter();
+
+
+const labelCol = { span: 4 };
+const wrapperCol = { span: 18 };
+const rules = {
+  semesterId: [
+    { required: true, message: '请选择学期', trigger: 'change', type: 'string', },
+  ],
+};
 const paramsState: UnwrapRef<ParamsState> = reactive({
-  name: '',
-  class: '',
+  describe: '',
 });
+const formState: UnwrapRef<PushHomework> = reactive({
+  homeworkId: '',
+  semesterId: '',
+})
 const semesters = ref<Semester[] | undefined>([]);
+const homeworkTemplates = ref<HomeworkTemplate[] | undefined>([]);
 const loading = ref<boolean>(false);
 const pageIndex = ref<number>(1);
-const total = ref<number>(20);
+const pageSize = ref<number>(10);
+const total = ref<number>(0);
+const visible = ref<boolean>(false);
+const confirmLoading = ref<boolean>(false);
+const formRef = ref();
 
 const onAdd = ():void => {
   router.push({
     path: '/homework-template/create',
-  })
+  });
 }
-const onCheck = (id: string): void => {
-  console.log(id);
+
+const onRelease = (id: string): void => {
+  formState.homeworkId = id;
+  visible.value = true;
 };
-const onDelete = (id: string): void => {
-  console.log(id);
+
+const onModalConfirm = () => {
+  formRef.value.validate().then(async () => {
+    confirmLoading.value = true;
+    const res = await pushHomework(toRaw(formState));
+    confirmLoading.value = false;
+    if (res && res.code === 0) {
+      notification.success({ message: '发布成功!' });
+      visible.value = false;
+      formState.homeworkId = '';
+    }
+  });
 };
-const onSearch = ():void => {
-  const params = toRaw(paramsState);
+
+const onDelete = async (id: string) => {
   loading.value = true;
+  const res = await deleteHomeworkTemplate({ids: [id]});
+  if (res.code === 0) {
+    notification.success({ message: '删除成功!' });
+    pageIndex.value = 1;
+    getHomeworkTemplateList();
+  }
 };
+
+const onSearch = ():void => {
+  getHomeworkTemplateList();
+};
+
 const onPageChange = (page: number, pageSize: number): void => {
-  console.log(page);
+  getHomeworkTemplateList();
 };
 
 const getSemesterList = async () => {
@@ -124,16 +169,34 @@ const getSemesterList = async () => {
   semesters.value = result.value!.list;
 };
 
+const getHomeworkTemplateList = async () => {
+  const params: RequestParams = {
+    pageIndex: pageIndex.value,
+    pageSize: pageSize.value,
+    ...toRaw(paramsState),
+  };
+  loading.value = true;
+  const { data: result } = await getHomeworkTemplateListByPage(params);
+  loading.value = false;
+  homeworkTemplates.value = result.value?.list;
+  total.value = result.value!.total;
+}
+
+const formatDate = (date:string): string => {
+  return moment(date).format('YYYY-MM-DD HH:mm:ss');
+};
+
 onMounted: {
   getSemesterList();
+  getHomeworkTemplateList();
 }
 </script>
 
 <style scoped>
-.work-release .ant-pagination {
+.homework-template .ant-pagination {
   margin-top: 24px;
 }
-.work-release .ant-form {
+.homework-template .ant-form {
   margin-bottom: 24px;
 }
 </style>
