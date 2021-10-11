@@ -14,7 +14,6 @@
         @select="selectMenu"
       >
         <a-menu-item v-for="item in menuList" :key="item.key">
-          <user-outlined />
           <span class="nav-text">{{ item.name }}</span>
         </a-menu-item>
       </a-menu>
@@ -66,16 +65,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import {
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  AppstoreOutlined,
-  TeamOutlined,
-  ShopOutlined,
-} from '@ant-design/icons-vue';
 import NavBar from './components/NavBar.vue';
 
 type MenuList = {
