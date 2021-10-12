@@ -1,7 +1,17 @@
 export const columns = [
   {
     title: '标题',
-    dataIndex: 'title',
+    dataIndex: 'describe',
+  },
+  {
+    title: '用户名',
+    dataIndex: 'username',
+    slots: { customRender: 'username' },
+  },
+  {
+    title: '电话',
+    dataIndex: 'phone',
+    slots: { customRender: 'phone' },
   },
   {
     title: '备注',
@@ -12,6 +22,12 @@ export const columns = [
     dataIndex: 'createTime',
     key: 'createTime',
     slots: { customRender: 'createTime' },
+  },
+  {
+    title: '更新时间',
+    dataIndex: 'updateTime',
+    key: 'updateTime',
+    slots: { customRender: 'updateTime' },
   },
   {
     title: '操作',

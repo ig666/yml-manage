@@ -1,4 +1,4 @@
-export const locale_zh = {
+export const locale_zh: any = {
   // override default English locale to your custom
   Resize: '缩放',
   Crop: '裁剪',
@@ -65,5 +65,9 @@ export const locale_zh = {
   Tint: '色调',
   Multiply: '正片叠底',
   Blend: '混合色',
+  ZoomIn: '放大',
+  ZoomOut: '缩小',
+  History: '历史记录',
+  Hand: '拖动'
   // etc...
 };

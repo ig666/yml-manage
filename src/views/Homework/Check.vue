@@ -20,7 +20,9 @@
                   class="operates"
                   style="margin-top: 8px; text-align: right"
                 >
-                  <a href="#" @click.stop.prevent="onEdit(item.photoUrl)">编辑</a>
+                  <a href="#" @click.stop.prevent="onEdit(item.photoUrl)"
+                    >编辑</a
+                  >
                 </div>
               </template>
             </a-card-meta>
@@ -37,7 +39,8 @@
       :confirm-loading="confirmLoading"
       @ok="onModalConfirm"
       @cancel="onModalCancel"
-      width="90%"
+      width="100%"
+      wrapClassName="full-modal"
     >
       <div id="tui-image-editor"></div>
     </a-modal>
@@ -47,44 +50,63 @@
 <script lang="ts" setup>
 import { nextTick, ref } from 'vue';
 import { locale_zh } from './tui-settings';
-import "tui-image-editor/dist/tui-image-editor.css";
-import "tui-color-picker/dist/tui-color-picker.css";
-import ImageEditor from "tui-image-editor";
+import 'tui-image-editor/dist/tui-image-editor.css';
+import 'tui-color-picker/dist/tui-color-picker.css';
+import ImageEditor from 'tui-image-editor';
 
 const homeworks = ref([
   {
-    photoUrl: 'http://yameila.oss-cn-beijing.aliyuncs.com/exampledir/WechatIMG5070.jpeg',
-    photoDescript: '123',
-  }
+    photoUrl: 'http://yameila.oss-cn-beijing.aliyuncs.com/exampledir/%E4%B8%8B%E8%BD%BD.jpg',
+    photoDescript: 'beautiful design',
+  },
 ]);
 const visible = ref<boolean>(false);
 const confirmLoading = ref<boolean>(false);
 let instance = null;
 
-const onEdit = async (url:string) => {
+const onEdit = async (url: string) => {
   visible.value = true;
   await nextTick();
-  const el:Element = document.querySelector("#tui-image-editor")!;
+  const el: Element = document.querySelector('#tui-image-editor')!;
   instance = new ImageEditor(el, {
     includeUI: {
+      locale: locale_zh,
       loadImage: {
         path: url,
-        name: "image"
+        name: 'image',
       },
-      locale: locale_zh,
-      initMenu: "draw",
-      menuBarPosition: "right",
+      initMenu: 'draw',
+      menuBarPosition: 'right',
+
     },
-  })
+  });
 };
 
 const onModalCancel = () => {
   instance = null;
-}
-
-const onModalConfirm = () => {
-
 };
+
+const onModalConfirm = () => {};
 </script>
 
+<style lang="less">
+.full-modal {
+  .ant-modal {
+    max-width: 100%;
+    top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+  .ant-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh);
+    border-radius: 0;
+  }
+  .ant-modal-body {
+    flex: 1;
+    padding: 8px;
+  }
+}
+</style>
 <style lang="less" scoped></style>

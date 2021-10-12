@@ -1,13 +1,8 @@
 <template>
   <div class="homework">
     <a-form layout="inline">
-      <a-form-item label="名称">
-        <a-input placeholder="请输入" />
-      </a-form-item>
-      <a-form-item label="学期">
-        <a-select style="width: 172px">
-          <a-select-option value="1">1</a-select-option>
-        </a-select>
+      <a-form-item label="标题">
+        <a-input v-model:value="paramsState.describe" placeholder="请输入" />
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSearch">搜索</a-button>
@@ -20,6 +15,18 @@
       :pagination="false"
       :loading="loading"
     >
+      <template #username="{ record }">
+        <span>{{ record.wechatUser && record.wechatUser.name }}</span>
+      </template>
+      <template #phone="{ record }">
+        <span>{{ record.wechatUser && record.wechatUser.phone }}</span>
+      </template>
+      <template #createTime="{ record }">
+        <span>{{ formatDate(record.createTime) }}</span>
+      </template>
+      <template #updateTime="{ record }">
+        <span>{{ formatDate(record.updateTime) }}</span>
+      </template>
       <template #action="{ record }">
         <span>
           <a @click="onCheck(record.id)">批改</a>
@@ -43,24 +50,44 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, toRaw, reactive, UnwrapRef, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import moment from 'moment';
 import { columns } from './table';
+import { getHomeworkListByPage, RequestParams, Homework } from '../../modules/homework.modules';
+
+interface ParamsState {
+  describe: string;
+}
 
 const router = useRouter();
+
+const paramsState: UnwrapRef<ParamsState> = reactive({
+  describe: '',
+});
 const loading = ref<boolean>(false);
 const pageIndex = ref<number>(1);
 const pageSize = ref<number>(10);
 const total = ref<number>(0);
-const homeworks = [
-  {
-    id: 1,
-    title: '123',
-    remark: '123',
-  },
-];
+const homeworks = ref<Homework[] | undefined>([]);
 
-const onSearch = () => {};
+const getHomeworkList = async () => {
+  const params: RequestParams = {
+    pageIndex: pageIndex.value,
+    pageSize: pageSize.value,
+    ...toRaw(paramsState),
+  };
+  loading.value = true;
+  const { data: result } = await getHomeworkListByPage(params);
+  loading.value = false;
+  homeworks.value = result.value?.list;
+  total.value = result.value!.total;
+};
+
+const onSearch = () => {
+  pageIndex.value = 1;
+  getHomeworkList();
+};
 
 const onCheck = (id:string) => {
   router.push({
@@ -68,7 +95,17 @@ const onCheck = (id:string) => {
   })
 };
 
-const onPageChange = () => {};
+const onPageChange = () => {
+  getHomeworkList();
+};
+
+const formatDate = (date: string): string => {
+  return moment(date).format('YYYY-MM-DD HH:mm:ss');
+};
+
+onMounted: {
+  getHomeworkList();
+}
 </script>
 
 <style lang="less" scoped>

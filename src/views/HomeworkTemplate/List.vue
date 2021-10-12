@@ -168,6 +168,7 @@ const onDelete = async (id: string) => {
 };
 
 const onSearch = (): void => {
+  pageIndex.value = 1;
   getHomeworkTemplateList();
 };
 
