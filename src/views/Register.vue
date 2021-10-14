@@ -37,6 +37,7 @@
           @click="onRegister"
           style="width: 100%; height: 50px; font-size: 20px"
           type="primary"
+          :loading="btnLoading"
           >立即注册</a-button
         >
         <div @click="goBack" style="text-align: center; margin-top: 6px">
@@ -73,6 +74,7 @@ const formState: UnwrapRef<FormState> = reactive({
   password: '',
   rePassword: '',
 });
+let btnLoading = ref<boolean>(false)
 const formRef = ref();
 // 密码验证
 let validatePass = async (rule: RuleObject, value: string) => {
@@ -116,7 +118,9 @@ const onRegister = (): void => {
     .then(async () => {
       const formData = toRaw(formState);
       const { rePassword, ...param } = formData;
+      btnLoading = true
       const { account } = await useRegister(param);
+      btnLoading = false
       if (account.value) {
         console.log(account);
         message.success('注册成功');

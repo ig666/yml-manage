@@ -31,6 +31,7 @@
           @click="onLogin"
           style="width: 100%; height: 50px; font-size: 20px"
           type="primary"
+          :loading="btnLoading"
           >登录</a-button
         >
       </div>
@@ -56,7 +57,8 @@ const formState: UnwrapRef<FormState> = reactive({
   account: '',
   password: '',
 });
-const rememberMe = ref<boolean>(false);
+let rememberMe = ref<boolean>(false);
+let btnLoading = ref<boolean>(false)
 
 const formRef = ref();
 const labelCol = { span: 5 };
@@ -72,7 +74,9 @@ const onLogin = (): void => {
     .validate()
     .then(async () => {
       const formData = toRaw(formState);
+      btnLoading = true
       const { account } = await useLogin(formData);
+      btnLoading = false
       if (account.value) {
         message.success('登录成功');
         router.replace({ path: '/person' });

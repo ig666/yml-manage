@@ -56,7 +56,12 @@
         </div>
       </a-layout-content>
       <a-layout-footer :style="{ textAlign: 'center' }">
-        YML ©2021 Created by cc
+        <div>YML ©2021 Created by cc</div>
+        <div>
+          <img src="../assets/police.png" alt=""/>
+          <a target="_black" href="http://beian.miit.gov.cn/">蜀ICP备2021025142</a>
+            
+        </div>
       </a-layout-footer>
     </a-layout>
   </a-layout>
@@ -92,6 +97,10 @@ const menuList: MenuList = [
   {
     key: '/semester',
     name: '学期管理'
+  },
+  {
+    key: '/account',
+    name: '账号管理'
   },
 ];
 
