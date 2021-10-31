@@ -8,6 +8,7 @@ export interface Semester {
   price: number;
   content: string;
   classStartTime: string;
+  homeWorks?: any;
 }
 
 export interface ResponseSemester {

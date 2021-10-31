@@ -111,7 +111,7 @@ const onSearch = () => {
   getHomeworkList();
 };
 
-const onCheck = (id: string, type: string) => {
+const onCheck = (id: string, type?: string) => {
   router.push({
     name: "HomeworkCheck",
     query: { id, type },

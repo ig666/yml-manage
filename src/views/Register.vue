@@ -118,9 +118,9 @@ const onRegister = (): void => {
     .then(async () => {
       const formData = toRaw(formState);
       const { rePassword, ...param } = formData;
-      btnLoading = true
+      btnLoading.value = true
       const { account } = await useRegister(param);
-      btnLoading = false
+      btnLoading.value = false
       if (account.value) {
         console.log(account);
         message.success('注册成功');

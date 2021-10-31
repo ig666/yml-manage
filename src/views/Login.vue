@@ -74,9 +74,9 @@ const onLogin = (): void => {
     .validate()
     .then(async () => {
       const formData = toRaw(formState);
-      btnLoading = true
+      btnLoading.value = true
       const { account } = await useLogin(formData);
-      btnLoading = false
+      btnLoading.value = false
       if (account.value) {
         message.success('登录成功');
         router.replace({ path: '/person' });
