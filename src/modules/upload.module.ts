@@ -1,6 +1,6 @@
-import OSS from 'ali-oss';
-import { useApi } from '../hooks';
-import { ref, Ref } from 'vue';
+import OSS from "ali-oss";
+import { useApi } from "../hooks";
+import { ref, Ref } from "vue";
 
 export interface OSSRequestData {
   region: string;
@@ -23,9 +23,7 @@ export type UsableOSSRequestData = Promise<{
   data: Ref<OSSRequestData | undefined>;
 }>;
 export const getOSSRequestData = async (): UsableOSSRequestData => {
-  const { request, response: data } = useApi<OSSRequestData>(
-    '/api/alioss/GetAliossTokens'
-  );
+  const { request, response: data } = useApi<OSSRequestData>("/api/alioss/GetAliossTokens");
   const loaded = ref<boolean>(false);
   if (loaded.value === false) {
     await request();
@@ -35,7 +33,7 @@ export const getOSSRequestData = async (): UsableOSSRequestData => {
   return { data };
 };
 
-export const useUpload = async (file: FileItem, filePath:string = 'exampledir') => {
+export const useUpload = async (file: FileItem | any, filePath: string = "exampledir") => {
   const { data } = await getOSSRequestData();
 
   const client = new OSS({
