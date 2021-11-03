@@ -52,12 +52,13 @@ interface FormState {
   account: string;
   password: string;
 }
-
+const user = JSON.parse((localStorage.getItem('user') || '{}'))
+console.log(user)
 const formState: UnwrapRef<FormState> = reactive({
-  account: '',
-  password: '',
+  account: user ? user.account : '',
+  password: user ? user.password : '',
 });
-let rememberMe = ref<boolean>(false);
+let rememberMe = ref<boolean>(localStorage.getItem('remember') == 'true');
 let btnLoading = ref<boolean>(false)
 
 const formRef = ref();
@@ -80,6 +81,12 @@ const onLogin = (): void => {
       if (account.value) {
         message.success('登录成功');
         router.replace({ path: '/person' });
+        if(rememberMe.value){
+          localStorage.setItem('user', JSON.stringify(toRaw(formState)))
+        } else {
+          localStorage.removeItem('user')
+        }
+        localStorage.setItem('remember', rememberMe.value)
         localStorage.setItem('token', account.value.token);
       }
     })

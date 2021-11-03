@@ -1,5 +1,5 @@
 <template>
-  <a-layout>
+  <a-layout style="height: 100%">
     <a-layout-sider
       breakpoint="lg"
       collapsed-width="0"
@@ -122,6 +122,7 @@ const onCollapse = (collapsed: boolean, type: string) => {
   // console.log(collapsed, type);
 };
 const onLogout = () => {
+  localStorage.removeItem('token')
   router.push({ path: '/login' });
 };
 </script>
