@@ -1,5 +1,6 @@
 import { useApi } from '../hooks';
 import { ref, Ref } from 'vue';
+import { UsableGetWechatUserListByPage, ResponseList } from './wechatUser.modules';
 
 interface AccountResponse {
   code: number;
@@ -27,6 +28,27 @@ export interface Account {
   id: string;
   account: string;
   token: string;
+}
+
+export interface PageRequstParams {
+  account: string;
+  pageIndex: number;
+  pageSize: number
+}
+
+export interface Accounts {
+  id: string;
+  account: string;
+  gender: number;
+}
+
+export interface PageResponseList {
+  accounts: Accounts[] | undefined;
+  count: number
+}
+
+export interface DeleteParams {
+  ids: string[]
 }
 
 // 注册
@@ -60,3 +82,30 @@ export const useLogin = async (data: LoginRequest): UsableLogin => {
   }
   return { account };
 };
+
+// 查询管理员列表
+export type UsAbleGetAccountListByPage = Promise<{ data: Ref<PageResponseList | undefined> }>
+export const getAccountListByPage = async (params: PageRequstParams): UsableGetWechatUserListByPage => {
+  const { request, response: data } = useApi<PageResponseList>('/api/account/getListByPage', params)
+  const loaded = ref<boolean>(false)
+  if(loaded.value === false){
+    await request()
+    loaded.value = true
+  }
+
+  return { data }
+}
+
+// 修改密码
+
+// 删除用户
+export const deleteAccount = async (params: DeleteParams) => {
+  const { request, response } = useApi<any>('/api/account/deleteUser', params, 'DELETE')
+    const loading = ref<boolean>(false)
+    let result = null
+    if(loading.value === false){
+        result = await request()
+        loading.value = true
+    }
+    return result
+}

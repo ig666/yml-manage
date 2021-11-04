@@ -33,6 +33,11 @@ const routes = [
         component: () => import('@/views/Account/List.vue'),
       },
       {
+        path: '/account/create',
+        name: 'AccountCreate',
+        component: () => import('@/views/Account/Form.vue'),
+      },
+      {
         path: '/homework-template',
         name: 'HomeworkTemplate',
         component: () => import('@/views/HomeworkTemplate/List.vue'),

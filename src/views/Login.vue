@@ -18,6 +18,7 @@
             <a-input
               type="password"
               v-model:value="formState.password"
+              @pressEnter="onLogin"
             ></a-input>
           </a-form-item>
         </a-form>
