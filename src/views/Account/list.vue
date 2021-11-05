@@ -17,7 +17,7 @@
         <span>{{ formatDate(record.createTime) }}</span>
       </template>
       <template #action="{record}">
-        <a-popconfirm title="确认重置密码？" @confirm="onReset(record.id, record.account)">
+        <a-popconfirm title="确认重置密码？重置后密码为：123456" @confirm="onReset(record.id, record.account)">
           <a href="#">重置密码</a>
         </a-popconfirm>
         <a-popconfirm title="确认删除当前账号？" @confirm="onDelete(record.id)">
