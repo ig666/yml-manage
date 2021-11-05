@@ -97,10 +97,21 @@ export const getAccountListByPage = async (params: PageRequstParams): UsableGetW
 }
 
 // 修改密码
+export const resetAccount = async (id: string, account: string) => {
+  const params = {id, account}
+  const { request, response } = useApi<any>('/api/account/resetAccount', params, 'PUT')
+    const loading = ref<boolean>(false)
+    let result = null
+    if(loading.value === false){
+        result = await request()
+        loading.value = true
+    }
+    return result
+}
 
 // 删除用户
 export const deleteAccount = async (params: DeleteParams) => {
-  const { request, response } = useApi<any>('/api/account/deleteUser', params, 'DELETE')
+  const { request, response } = useApi<any>('/api/account/deleteAccount', params, 'DELETE')
     const loading = ref<boolean>(false)
     let result = null
     if(loading.value === false){

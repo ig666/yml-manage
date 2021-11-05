@@ -17,7 +17,7 @@
         <span>{{ formatDate(record.createTime) }}</span>
       </template>
       <template #action="{record}">
-        <a-popconfirm title="确认重置密码？" @confirm="onReset(record.id)">
+        <a-popconfirm title="确认重置密码？" @confirm="onReset(record.id, record.account)">
           <a href="#">重置密码</a>
         </a-popconfirm>
         <a-popconfirm title="确认删除当前账号？" @confirm="onDelete(record.id)">
@@ -33,7 +33,7 @@
 import { notification } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import { ref, reactive, UnwrapRef, toRaw } from "vue";
-import { Accounts, getAccountListByPage, deleteAccount } from '../../modules/account.module'
+import { Accounts, getAccountListByPage, deleteAccount, resetAccount } from '../../modules/account.module'
 import { columns } from './table'
 import moment from 'moment';
 const router = useRouter()
@@ -65,7 +65,6 @@ const onAdd = () => {
 
 // 删除
 const onDelete = async (id: string) => {
-  return
   loading.value = true
   const res: any = await deleteAccount({ids: [id]})
   loading.value = false
@@ -76,8 +75,13 @@ const onDelete = async (id: string) => {
   }
 }
 // 重置密码
-const onReset = (id: string) => {
-
+const onReset = async (id: string, account: string) => {
+  loading.value = true
+  const res: any = await resetAccount(id, account)
+  loading.value = false
+  if(res.code === 0){
+    notification.success({ message: "重置密码成功" })
+  }
 }
 
 // 搜索
