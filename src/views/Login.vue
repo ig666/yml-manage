@@ -86,7 +86,7 @@ const onLogin = (): void => {
         } else {
           localStorage.removeItem('user')
         }
-        localStorage.setItem('remember', rememberMe.value)
+        localStorage.setItem('remember', rememberMe.value.toString())
         localStorage.setItem('token', account.value.token);
       }
     })
