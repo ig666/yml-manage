@@ -1,18 +1,8 @@
 <template>
   <a-layout style="height: 100%">
-    <a-layout-sider
-      breakpoint="lg"
-      collapsed-width="0"
-      @collapse="onCollapse"
-      @breakpoint="onBreakpoint"
-    >
+    <a-layout-sider breakpoint="lg" collapsed-width="0" @collapse="onCollapse" @breakpoint="onBreakpoint">
       <div class="logo" />
-      <a-menu
-        theme="dark"
-        mode="inline"
-        v-model:selectedKeys="selectedKeys"
-        @select="selectMenu"
-      >
+      <a-menu theme="dark" mode="inline" v-model:selectedKeys="selectedKeys" @select="selectMenu">
         <a-menu-item v-for="item in menuList" :key="item.key">
           <span class="nav-text">{{ item.name }}</span>
         </a-menu-item>
@@ -25,9 +15,7 @@
             <a-dropdown>
               <div style="cursor: pointer">
                 <span style="margin-right: 8px">@cc</span>
-                <a-avatar
-                  src="http://m.imeitou.com/uploads/allimg/2020052715/ihzlr0erues.jpeg"
-                />
+                <a-avatar src="http://m.imeitou.com/uploads/allimg/2020052715/ihzlr0erues.jpeg" />
               </div>
               <template #overlay>
                 <a-menu>
@@ -58,9 +46,8 @@
       <a-layout-footer :style="{ textAlign: 'center' }">
         <div>YML ©2021 Created by cc</div>
         <div>
-          <img src="../assets/police.png" alt=""/>
+          <img src="../assets/police.png" alt="" />
           <a target="_black" href="http://beian.miit.gov.cn/">蜀ICP备2021025142</a>
-            
         </div>
       </a-layout-footer>
     </a-layout>
@@ -68,9 +55,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import NavBar from './components/NavBar.vue';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import NavBar from "./components/NavBar.vue";
 
 type MenuList = {
   key: string;
@@ -83,24 +70,28 @@ const menuList: MenuList = [
   //   name: '首页',
   // },
   {
-    key: '/person',
-    name: '学员管理',
+    key: "/person",
+    name: "学员管理",
   },
   {
-    key: '/homework-template',
-    name: '作业模版管理',
+    key: "/homework-template",
+    name: "作业模版管理",
   },
   {
-    key: '/homework',
-    name: '作业管理',
+    key: "/homework",
+    name: "作业管理",
   },
   {
-    key: '/semester',
-    name: '学期管理'
+    key: "/semester",
+    name: "学期管理",
   },
   {
-    key: '/account',
-    name: '账号管理'
+    key: "/account",
+    name: "账号管理",
+  },
+  {
+    key: "/wechatOrder",
+    name: "订单管理",
   },
 ];
 
@@ -122,8 +113,8 @@ const onCollapse = (collapsed: boolean, type: string) => {
   // console.log(collapsed, type);
 };
 const onLogout = () => {
-  localStorage.removeItem('token')
-  router.push({ path: '/login' });
+  localStorage.removeItem("token");
+  router.push({ path: "/login" });
 };
 </script>
 
@@ -137,7 +128,7 @@ const onLogout = () => {
   background: #fff;
 }
 
-[data-theme='dark'] .site-layout .site-layout-background {
+[data-theme="dark"] .site-layout .site-layout-background {
   background: #141414;
 }
 </style>

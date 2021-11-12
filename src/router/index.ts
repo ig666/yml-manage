@@ -62,6 +62,11 @@ const routes = [
         name: 'Semester',
         component: () => import('@/views/Semester.vue'),
       },
+      {
+        path: '/wechatOrder',
+        name: 'WechatOrder',
+        component: () => import('@/views/Order/List.vue'),
+      },
     ]
   },
 ];
