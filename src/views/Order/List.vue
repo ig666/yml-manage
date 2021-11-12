@@ -76,8 +76,6 @@ const getWechatOrderList = async () => {
 };
 
 const formatDate = (date: string): string => {
-  console.log(date, "时间");
-
   return moment(date).format("YYYY-MM-DD HH:mm:ss");
 };
 

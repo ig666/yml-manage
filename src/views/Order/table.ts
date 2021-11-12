@@ -22,11 +22,11 @@ export const columns = [
   },
   {
     title: "支付人",
-    dataIndex: "wechatUser.name",
+    dataIndex: "wechatUserName",
   },
   {
     title: "手机号",
-    dataIndex: "wechatUser.phone",
+    dataIndex: "wechatUserPhone",
   },
   {
     title: "创建时间",
