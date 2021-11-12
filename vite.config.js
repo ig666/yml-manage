@@ -24,7 +24,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080/',
+        target: 'https://yameila.vip/api/',
         rewrite: path => path.replace(/^\/api/, ''),
         changeOrigin: true,
       }
