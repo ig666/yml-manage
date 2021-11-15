@@ -18,7 +18,12 @@
         <span>{{ Gender[record.gender] }}</span>
       </template>
       <template #semesters="{record}">
+      <a-tooltip placement="top">
+        <template #title>
+          <span>{{ record.semesters.map(item => item.semesterName).toString() }}</span>
+        </template>
         <span>{{ record.semesters.map(item => item.semesterName).toString() }}</span>
+      </a-tooltip>
       </template>
       <template #action="{record}">
         <a-popconfirm title="确认删除当前学员？" @confirm="onDelete(record.id)">

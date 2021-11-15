@@ -17,7 +17,7 @@ export interface DeleteParams {
 
 export interface ResponseList {
     list: Users[];
-    todal: number
+    total: number
 }
 
 export interface RequestParams {
