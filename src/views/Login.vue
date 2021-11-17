@@ -24,9 +24,9 @@
         </a-form>
         <div class="operate-box">
           <a-checkbox v-model:checked="rememberMe">记住密码</a-checkbox>
-          <a class="register" @click="goRegister" href="javascript:;"
+          <!-- <a class="register" @click="goRegister" href="javascript:;"
             >立即注册</a
-          >
+          > -->
         </div>
         <a-button
           @click="onLogin"
