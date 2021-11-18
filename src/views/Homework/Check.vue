@@ -81,7 +81,8 @@ const onEdit = async (item: any) => {
   const el: Element = document.querySelector("#tui-image-editor")!;
   instance = new ImageEditor(el, {
     includeUI: {
-      // locale: locale_zh,
+      // @ts-ignore
+      locale: locale_zh,
       loadImage: {
         path: item.photoUrl,
         name: "image",

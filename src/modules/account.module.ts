@@ -85,7 +85,7 @@ export const useLogin = async (data: LoginRequest): UsableLogin => {
 
 // 查询管理员列表
 export type UsAbleGetAccountListByPage = Promise<{ data: Ref<PageResponseList | undefined> }>
-export const getAccountListByPage = async (params: PageRequstParams): UsableGetWechatUserListByPage => {
+export const getAccountListByPage = async (params: PageRequstParams): UsAbleGetAccountListByPage => {
   const { request, response: data } = useApi<PageResponseList>('/api/account/getListByPage', params)
   const loaded = ref<boolean>(false)
   if(loaded.value === false){
