@@ -54,7 +54,7 @@ const loading = ref<boolean>(false)
 const pageIndex = ref<number>(1)
 const pageSize = ref<number>(10)
 const total = ref<number>(0)
-const accounts = ref<Accounts | undefined>([])
+const accounts = ref<Accounts[] | undefined>([])
 
 // 点击新增
 const onAdd = () => {

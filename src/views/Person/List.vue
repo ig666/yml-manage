@@ -20,9 +20,9 @@
       <template #semesters="{record}">
       <a-tooltip placement="top">
         <template #title>
-          <span>{{ record.semesters.map(item => item.semesterName).toString() }}</span>
+          <span>{{ record.semesters.map((item: Semester) => item.semesterName).toString() }}</span>
         </template>
-        <span>{{ record.semesters.map(item => item.semesterName).toString() }}</span>
+        <span>{{ record.semesters.map((item: Semester) => item.semesterName).toString() }}</span>
       </a-tooltip>
       </template>
       <template #action="{record}">
