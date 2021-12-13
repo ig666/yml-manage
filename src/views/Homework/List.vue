@@ -3,21 +3,33 @@
     <a-form layout="inline">
       <a-form-item label="状态">
         <a-select v-model:value="paramsState.workStatus" style="width: 172px">
-          <a-select-option v-for="item in statusList" :value="item" :key="item">{{ WorkStatus[item] }}</a-select-option>
+          <a-select-option v-for="item in statusList" :key="item" :value="item">{{
+            WorkStatus[item]
+          }}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="所属学期">
         <a-select v-model:value="paramsState.semester" style="width: 172px">
-          <a-select-option v-for="item in semesters" :value="item.id" :key="item.id">{{ item.semesterName }}</a-select-option>
+          <a-select-option v-for="item in semesters" :key="item.id" :value="item.id">{{
+            item.semesterName
+          }}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSearch">搜索</a-button>
       </a-form-item>
     </a-form>
-    <a-table :columns="columns" :data-source="homeworks" rowKey="id" :pagination="false" :loading="loading">
+    <a-table
+      :columns="columns"
+      :data-source="homeworks"
+      row-key="id"
+      :pagination="false"
+      :loading="loading"
+    >
       <template #status="{ record }">
-        <span :style="{ color: WorkStatusColors[record.status] }">{{ WorkStatus[record.status] }}</span>
+        <span :style="{ color: WorkStatusColors[record.status] }">{{
+          WorkStatus[record.status]
+        }}</span>
       </template>
       <template #username="{ record }">
         <span>{{ record.wechatUser && record.wechatUser.name }}</span>
@@ -47,18 +59,29 @@
         </span>
       </template>
     </a-table>
-    <a-pagination v-model:current="pageIndex" :total="total" @change="onPageChange" show-less-items />
+    <a-pagination
+      v-model:current="pageIndex"
+      :total="total"
+      show-less-items
+      @change="onPageChange"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, toRaw, reactive, UnwrapRef, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import { message, notification } from "ant-design-vue";
-import moment from "moment";
-import { columns } from "./table";
-import { getHomeworkListByPage, RequestParams, Homework, WorkStatus, deleteHomework } from "../../modules/homework.modules";
-import { getSemesterListByPage, Semester } from "../../modules/semester.module";
+import { ref, toRaw, reactive, UnwrapRef, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { message, notification } from 'ant-design-vue';
+import moment from 'moment';
+import { columns } from './table';
+import {
+  getHomeworkListByPage,
+  RequestParams,
+  Homework,
+  WorkStatus,
+  deleteHomework,
+} from '../../modules/homework.modules';
+import { getSemesterListByPage, Semester } from '../../modules/semester.module';
 
 interface ParamsState {
   semester: string;
@@ -66,16 +89,16 @@ interface ParamsState {
 }
 
 enum WorkStatusColors {
-  "#18D0CC" = 1,
-  "#3A74F2" = 2,
-  "#6AD038" = 3,
-  "#FA5D5D" = 4,
+  '#18D0CC' = 1,
+  '#3A74F2' = 2,
+  '#6AD038' = 3,
+  '#FA5D5D' = 4,
 }
 
 const router = useRouter();
 
 const paramsState: UnwrapRef<ParamsState> = reactive({
-  semester: "",
+  semester: '',
   workStatus: undefined,
 });
 const semesters = ref<Semester[] | undefined>([]);
@@ -113,7 +136,7 @@ const onSearch = () => {
 
 const onCheck = (id: string, type?: string) => {
   router.push({
-    name: "HomeworkCheck",
+    name: 'HomeworkCheck',
     query: { id, type },
   });
 };
@@ -126,14 +149,14 @@ const onDelete = async (id: string) => {
   loading.value = true;
   const res = await deleteHomework({ ids: [id] });
   if (res.code === 0) {
-    notification.success({ message: "删除成功!" });
+    notification.success({ message: '删除成功!' });
     pageIndex.value = 1;
     getHomeworkList();
   }
 };
 
 const formatDate = (date: string): string => {
-  return moment(date).format("YYYY-MM-DD HH:mm:ss");
+  return moment(date).format('YYYY-MM-DD HH:mm:ss');
 };
 
 onMounted: {

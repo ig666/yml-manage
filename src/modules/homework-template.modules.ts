@@ -39,10 +39,7 @@ export type UsableGetHomeworkTemplateListByPage = Promise<{
 export const getHomeworkTemplateListByPage = async (
   params: RequestParams
 ): UsableGetHomeworkTemplateListByPage => {
-  const { request, response: data } = useApi<ResponseHomeworkTemplate>(
-    '/api/homework',
-    params
-  );
+  const { request, response: data } = useApi<ResponseHomeworkTemplate>('/api/homework', params);
   const loaded = ref<boolean>(false);
   if (loaded.value === false) {
     await request();
@@ -65,11 +62,7 @@ export const createHomeworkTemplate = async (data: HomeworkTemplate) => {
 };
 
 export const deleteHomeworkTemplate = async (data: DeleteParams) => {
-  const { request, response } = useApi<any>(
-    '/api/homework',
-    data,
-    'DELETE'
-  );
+  const { request, response } = useApi<any>('/api/homework', data, 'DELETE');
   const loaded = ref<boolean>(false);
   let result = null;
   if (loaded.value === false) {
@@ -81,11 +74,7 @@ export const deleteHomeworkTemplate = async (data: DeleteParams) => {
 };
 
 export const pushHomework = async (data: PushHomework) => {
-  const { request, response } = useApi<any>(
-    '/api/homework/push',
-    data,
-    'POST'
-  );
+  const { request, response } = useApi<any>('/api/homework/push', data, 'POST');
   const loaded = ref<boolean>(false);
   let result = null;
   if (loaded.value === false) {
@@ -94,4 +83,4 @@ export const pushHomework = async (data: PushHomework) => {
   }
 
   return result;
-}
+};

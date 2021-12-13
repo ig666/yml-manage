@@ -2,15 +2,28 @@
   <div class="order">
     <a-form layout="inline">
       <a-form-item label="所属学期">
-        <a-select placeholder="选择学期" allowClear v-model:value="form.description" style="width: 172px">
-          <a-select-option v-for="item in semesters" :value="item.semesterName" :key="item.id">{{ item.semesterName }}</a-select-option>
+        <a-select
+          v-model:value="form.description"
+          placeholder="选择学期"
+          allow-clear
+          style="width: 172px"
+        >
+          <a-select-option v-for="item in semesters" :key="item.id" :value="item.semesterName">{{
+            item.semesterName
+          }}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSearch">搜索</a-button>
       </a-form-item>
     </a-form>
-    <a-table :loading="loading" rowKey="id" :dataSource="orderList" :columns="columns" :pagination="false">
+    <a-table
+      :loading="loading"
+      row-key="id"
+      :data-source="orderList"
+      :columns="columns"
+      :pagination="false"
+    >
       <template #orderStatus="{ record }">
         <span>{{ OrderStatus[record.orderStatus] }}</span>
       </template>
@@ -18,23 +31,28 @@
         <span>{{ formatDate(record.createTime) }}</span>
       </template>
     </a-table>
-    <a-pagination v-model:current="pageIndex" :total="total" @change="onPageChange" show-less-items />
+    <a-pagination
+      v-model:current="pageIndex"
+      :total="total"
+      show-less-items
+      @change="onPageChange"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, UnwrapRef, toRaw } from "vue";
-import { columns } from "./table";
-import { getSemesterListByPage, Semester } from "../../modules/semester.module";
-import { Order, OrderStatus, getOrderList, QueryParams } from "../../modules/wechatOrder.module";
-import moment from "moment";
+import { ref, reactive, UnwrapRef, toRaw } from 'vue';
+import { columns } from './table';
+import { getSemesterListByPage, Semester } from '../../modules/semester.module';
+import { Order, OrderStatus, getOrderList, QueryParams } from '../../modules/wechatOrder.module';
+import moment from 'moment';
 
 interface form {
   description: string;
 }
 
 const form: UnwrapRef<form> = reactive({
-  description: "",
+  description: '',
 });
 
 const semesters = ref<Semester[] | undefined>([]);
@@ -76,7 +94,7 @@ const getWechatOrderList = async () => {
 };
 
 const formatDate = (date: string): string => {
-  return moment(date).format("YYYY-MM-DD HH:mm:ss");
+  return moment(date).format('YYYY-MM-DD HH:mm:ss');
 };
 
 onMounted: {

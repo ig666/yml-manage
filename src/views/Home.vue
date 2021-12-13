@@ -15,25 +15,24 @@ import { useUpload } from '../modules/upload.module';
 
 const info = ref<Person | undefined>();
 
-const loadData = async (pageIndex:number, pageSize:number) => {
+const loadData = async (pageIndex: number, pageSize: number) => {
   const { personInfo } = await getPersonInfo({ pageIndex, pageSize });
   info.value = personInfo.value;
-}
+};
 
 const uploadFile = async () => {
   // const result = await useUpload();
   // console.log(result);
-}
+};
 
 const onClick = () => {
   loadData(1, 10);
-}
+};
 
 onMounted: {
   loadData(1, 20);
   uploadFile();
 }
-
 </script>
 
 <style scoped>

@@ -1,36 +1,36 @@
 export const columns = [
   {
-    title: "订单号",
-    dataIndex: "orderNum",
+    title: '订单号',
+    dataIndex: 'orderNum',
   },
   {
-    title: "学期名称",
-    dataIndex: "description",
+    title: '学期名称',
+    dataIndex: 'description',
   },
   {
-    title: "价格",
-    dataIndex: "price",
+    title: '价格',
+    dataIndex: 'price',
   },
   {
-    title: "订单状态",
-    dataIndex: "orderStatus",
-    slots: { customRender: "orderStatus" },
+    title: '订单状态',
+    dataIndex: 'orderStatus',
+    slots: { customRender: 'orderStatus' },
   },
   {
-    title: "失败原因",
-    dataIndex: "failReason",
+    title: '失败原因',
+    dataIndex: 'failReason',
   },
   {
-    title: "支付人",
-    dataIndex: "wechatUserName",
+    title: '支付人',
+    dataIndex: 'wechatUserName',
   },
   {
-    title: "手机号",
-    dataIndex: "wechatUserPhone",
+    title: '手机号',
+    dataIndex: 'wechatUserPhone',
   },
   {
-    title: "创建时间",
-    dataIndex: "createTime",
-    slots: { customRender: "createTime" },
+    title: '创建时间',
+    dataIndex: 'createTime',
+    slots: { customRender: 'createTime' },
   },
 ];

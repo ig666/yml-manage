@@ -26,9 +26,7 @@ export type UsableGetSemesterInfo = Promise<{
   semester: Ref<Semester | undefined>;
 }>;
 export const getSemesterInfo = async (id: string): UsableGetSemesterInfo => {
-  const { request, response: semester } = useApi<Semester>(
-    '/api/semester/' + id
-  );
+  const { request, response: semester } = useApi<Semester>('/api/semester/' + id);
   const loaded = ref<boolean>(false);
   if (loaded.value === false) {
     await request();
@@ -41,13 +39,8 @@ export const getSemesterInfo = async (id: string): UsableGetSemesterInfo => {
 export type UsableGetSemesterListByPage = Promise<{
   data: Ref<ResponseSemester | undefined>;
 }>;
-export const getSemesterListByPage = async (
-  params: RequestParams
-): UsableGetSemesterListByPage => {
-  const { request, response: data } = useApi<ResponseSemester>(
-    '/api/semester',
-    params
-  );
+export const getSemesterListByPage = async (params: RequestParams): UsableGetSemesterListByPage => {
+  const { request, response: data } = useApi<ResponseSemester>('/api/semester', params);
   const loaded = ref<boolean>(false);
   if (loaded.value === false) {
     await request();
@@ -82,11 +75,7 @@ export const updateSemester = async (data: Semester) => {
 };
 
 export const deleteSemester = async (id: string) => {
-  const { request, response } = useApi<any>(
-    '/api/semester/' + id,
-    {},
-    'DELETE'
-  );
+  const { request, response } = useApi<any>('/api/semester/' + id, {}, 'DELETE');
   const loaded = ref<boolean>(false);
   let result = null;
   if (loaded.value === false) {

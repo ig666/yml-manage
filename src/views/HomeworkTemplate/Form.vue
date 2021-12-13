@@ -3,12 +3,7 @@
     <h2>新增</h2>
     <div class="container">
       <a-row :gutter="12">
-        <a-col
-          class="list-complete-item"
-          :span="6"
-          v-for="(item, index) in homeworks"
-          :key="index"
-        >
+        <a-col v-for="(item, index) in homeworks" :key="index" class="list-complete-item" :span="6">
           <a-card hoverable>
             <template #cover>
               <img alt="example" :src="item.photoUrl" />
@@ -16,10 +11,7 @@
             <a-card-meta title="描述">
               <template #description>
                 <a-input v-model:value="item.photoDescript"></a-input>
-                <div
-                  class="operates"
-                  style="margin-top: 8px; text-align: right"
-                >
+                <div class="operates" style="margin-top: 8px; text-align: right">
                   <a href="#" @click.stop.prevent="onDelete(index)">删除</a>
                 </div>
               </template>
@@ -38,8 +30,8 @@
           <a-upload
             v-model:file-list="fileList"
             name="file"
-            :beforeUpload="onBeforeUpload"
-            :showUploadList="false"
+            :before-upload="onBeforeUpload"
+            :show-upload-list="false"
           >
             <a-button :loading="uploadLoading">上传图片</a-button>
           </a-upload>
@@ -51,10 +43,8 @@
           <a-input v-model:value="formState.remark" />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-          <a-button :loading="submitLoading" type="primary" @click="onSubmit"
-            >保存</a-button
-          >
-          <a-button @click="onBack" style="margin-left: 8px">返回</a-button>
+          <a-button :loading="submitLoading" type="primary" @click="onSubmit">保存</a-button>
+          <a-button style="margin-left: 8px" @click="onBack">返回</a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -127,7 +117,7 @@ const onBack = () => {
 const uploadFile = async (file: FileItem) => {
   const fileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
   if (!fileTypes.includes(file.type)) {
-    message.error('请上传jpg、png格式图片!')
+    message.error('请上传jpg、png格式图片!');
     return;
   }
   uploadLoading.value = true;

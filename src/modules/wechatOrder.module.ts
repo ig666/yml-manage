@@ -1,9 +1,9 @@
-import { useApi } from "../hooks";
-import { ref, Ref } from "vue";
+import { useApi } from '../hooks';
+import { ref, Ref } from 'vue';
 export enum OrderStatus {
-  "成功" = 1, // 成功
-  "进行中" = 2, // 进行中
-  "失败" = 3, // 失败
+  '成功' = 1, // 成功
+  '进行中' = 2, // 进行中
+  '失败' = 3, // 失败
 }
 
 export interface Order {
@@ -36,7 +36,7 @@ export interface QueryParams {
 }
 
 export const getOrderList = async (params: QueryParams) => {
-  const { request, response } = useApi<any>("/api/wechat-pay-order", params);
+  const { request, response } = useApi<any>('/api/wechat-pay-order', params);
   const loading = ref<boolean>(false);
   let result = null;
   if (loading.value === false) {

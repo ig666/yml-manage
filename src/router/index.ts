@@ -14,7 +14,7 @@ const routes = [
   {
     path: '/',
     name: 'Layout',
-    component: () => import("@/layout/Layout.vue"),
+    component: () => import('@/layout/Layout.vue'),
     redirect: '/login',
     children: [
       // {
@@ -67,7 +67,7 @@ const routes = [
         name: 'WechatOrder',
         component: () => import('@/views/Order/List.vue'),
       },
-    ]
+    ],
   },
 ];
 

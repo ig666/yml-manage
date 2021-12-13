@@ -10,10 +10,7 @@ export interface UsableAPI<T> {
   request: ApiRequest;
 }
 
-const noTokenUrl: RequestInfo[] = [
-  '/api/account/login',
-  '/api/account/register',
-];
+const noTokenUrl: RequestInfo[] = ['/api/account/login', '/api/account/register'];
 function useApi<T>(url: RequestInfo, data?: any, method: string = 'GET') {
   let options: RequestInit = {};
   const token: string = localStorage.getItem('token')!;
@@ -49,11 +46,11 @@ function useApi<T>(url: RequestInfo, data?: any, method: string = 'GET') {
       if (res.status !== 200) {
         const status = res.status;
         if (status === 404) {
-          message.error("请求接口不存在");
+          message.error('请求接口不存在');
         } else if (status === 500) {
-          message.error("内部服务器出错");
+          message.error('内部服务器出错');
         }
-        return; 
+        return;
       }
       const data = await res.json();
       switch (data.code) {

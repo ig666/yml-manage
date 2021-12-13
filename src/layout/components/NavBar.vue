@@ -1,6 +1,6 @@
 <template>
   <div class="nav-bar-container">
-    <a-row :gutter="15" style="width: 100%;">
+    <a-row :gutter="15" style="width: 100%">
       <a-col :xs="15" :sm="15" :md="12" :lg="12" :xl="12">
         <div class="left-panel">
           <slot name="left"></slot>
@@ -15,9 +15,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <style lang="less" scoped>
 .nav-bar-container {

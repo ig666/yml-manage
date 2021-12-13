@@ -2,20 +2,17 @@
   <div class="class">
     <a-form layout="inline" :model="paramsState">
       <a-form-item label="学期名称">
-        <a-input
-          v-model:value="paramsState.semesterName"
-          placeholder="请输入学期名称"
-        ></a-input>
+        <a-input v-model:value="paramsState.semesterName" placeholder="请输入学期名称"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSearch">搜索</a-button>
-        <a-button @click="onAdd" style="margin-left: 8px">新增</a-button>
+        <a-button style="margin-left: 8px" @click="onAdd">新增</a-button>
       </a-form-item>
     </a-form>
     <a-table
       :columns="columns"
       :data-source="data"
-      rowKey="id"
+      row-key="id"
       :pagination="false"
       :loading="loading"
     >
@@ -26,10 +23,7 @@
         <span>
           <a @click="onEdit(record.id)">编辑</a>
           <a-divider type="vertical" />
-          <a-popconfirm
-            title="确认删除当前学期？"
-            @confirm="onConfirmDelete(record.id)"
-          >
+          <a-popconfirm title="确认删除当前学期？" @confirm="onConfirmDelete(record.id)">
             <a href="#">删除</a>
           </a-popconfirm>
         </span>
@@ -38,12 +32,12 @@
     <a-pagination
       v-model:current="pageIndex"
       :total="total"
-      @change="onPageChange"
       show-less-items
+      @change="onPageChange"
     />
     <a-modal
-      :title="title"
       v-model:visible="visible"
+      :title="title"
       :confirm-loading="confirmLoading"
       @ok="onModalConfirm"
     >
@@ -56,21 +50,15 @@
           :wrapper-col="wrapperCol"
         >
           <a-form-item label="学期名称" name="semesterName">
-            <a-input
-              v-model:value="formState.semesterName"
-              placeholder="请输入学期名称"
-            />
+            <a-input v-model:value="formState.semesterName" placeholder="请输入学期名称" />
           </a-form-item>
           <a-form-item label="学期标题" name="semesterTitle">
-            <a-input
-              v-model:value="formState.semesterTitle"
-              placeholder="请输入学期标题"
-            />
+            <a-input v-model:value="formState.semesterTitle" placeholder="请输入学期标题" />
           </a-form-item>
           <a-form-item label="价格" name="price">
             <a-input-number
-              :disabled="modalType === 'edit'"
               v-model:value="formState.price"
+              :disabled="modalType === 'edit'"
               :min="0"
             />
           </a-form-item>
@@ -83,11 +71,7 @@
             />
           </a-form-item>
           <a-form-item label="内容" name="content">
-            <a-textarea
-              v-model:value="formState.content"
-              showCount
-              :maxlength="1000"
-            />
+            <a-textarea v-model:value="formState.content" show-count :maxlength="1000" />
           </a-form-item>
         </a-form>
       </template>
@@ -96,14 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ref,
-  UnwrapRef,
-  reactive,
-  computed,
-  toRaw,
-  nextTick,
-} from 'vue';
+import { ref, UnwrapRef, reactive, computed, toRaw, nextTick } from 'vue';
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
 import { Moment } from 'moment';
 import moment from 'moment';
@@ -189,21 +166,13 @@ const confirmLoading = ref<boolean>(false);
 const labelCol = { span: 4 };
 const wrapperCol = { span: 18 };
 const rules = {
-  semesterName: [
-    { required: true, message: '请输入学期名称', trigger: 'blur', type: 'string', },
-  ],
-  semesterTitle: [
-    { required: true, message: '请输入学期标题', trigger: 'blur', type: 'string', },
-  ],
-  price: [
-    { required: true, message: '请输入价格', trigger: 'blur', type: 'number', },
-  ],
+  semesterName: [{ required: true, message: '请输入学期名称', trigger: 'blur', type: 'string' }],
+  semesterTitle: [{ required: true, message: '请输入学期标题', trigger: 'blur', type: 'string' }],
+  price: [{ required: true, message: '请输入价格', trigger: 'blur', type: 'number' }],
   classStartTime: [
-    { required: true, message: '请选择开课时间', trigger: 'change', type: 'object', },
+    { required: true, message: '请选择开课时间', trigger: 'change', type: 'object' },
   ],
-  content: [
-    { required: true, message: '请输入内容', trigger: 'blur', type: 'string', }
-  ]
+  content: [{ required: true, message: '请输入内容', trigger: 'blur', type: 'string' }],
 };
 
 const title = computed<string>(() => {
@@ -217,7 +186,7 @@ const title = computed<string>(() => {
   }
 });
 
-const formatDate = (date:string): string => {
+const formatDate = (date: string): string => {
   return moment(date).format('YYYY-MM-DD HH:mm:ss');
 };
 
@@ -238,13 +207,13 @@ const onAdd = async () => {
   resetForm();
 };
 
-const onEdit = async (id:string) => {
+const onEdit = async (id: string) => {
   modalType.value = 'edit';
   visible.value = true;
   const { semester } = await getSemesterInfo(id);
   if (semester) {
     formState.id = semester.value!.id;
-    formState.semesterName =semester.value!.semesterName;
+    formState.semesterName = semester.value!.semesterName;
     formState.semesterTitle = semester.value!.semesterTitle;
     formState.price = semester.value!.price;
     formState.content = semester.value!.content;
@@ -269,7 +238,7 @@ const getSemesterList = async () => {
     ...toRaw(paramsState),
   };
   loading.value = true;
-  const { data:result } = await getSemesterListByPage(params);
+  const { data: result } = await getSemesterListByPage(params);
   loading.value = false;
   data.value = result.value?.list;
   total.value = result.value!.total;
@@ -284,18 +253,14 @@ const onModalConfirm = () => {
     .validate()
     .then(async () => {
       const data = JSON.parse(JSON.stringify(toRaw(formState)));
-      data.classStartTime = moment(data.classStartTime).format(
-        'YYYY-MM-DD HH:mm:ss'
-      );
+      data.classStartTime = moment(data.classStartTime).format('YYYY-MM-DD HH:mm:ss');
       confirmLoading.value = true;
       const res =
-        modalType.value === 'add'
-          ? await createSemester(data)
-          : await updateSemester(data);
+        modalType.value === 'add' ? await createSemester(data) : await updateSemester(data);
       confirmLoading.value = false;
       if (res && res.code === 0) {
         notification.success({
-          message: modalType.value === 'add' ? '新增成功' : '编辑成功'
+          message: modalType.value === 'add' ? '新增成功' : '编辑成功',
         });
         pageIndex.value = 1;
         paramsState.semesterName = '';

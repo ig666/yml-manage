@@ -3,7 +3,7 @@
     <h2>批改</h2>
     <div class="container">
       <a-row :gutter="12">
-        <a-col class="list-complete-item" :span="6" v-for="(item, index) in homeworks" :key="index">
+        <a-col v-for="(item, index) in homeworks" :key="index" class="list-complete-item" :span="6">
           <a-card hoverable>
             <template #cover>
               <img alt="example" :src="item.photoUrl" />
@@ -27,7 +27,9 @@
         <div>
           <span>作业打分：</span>
           <a-select v-model:value="homeworkDetail.status" style="width: 172px">
-            <a-select-option v-for="item in statusList" :value="item" :key="item">{{ WorkStatus[item] }}</a-select-option>
+            <a-select-option v-for="item in statusList" :key="item" :value="item">{{
+              WorkStatus[item]
+            }}</a-select-option>
           </a-select>
         </div>
       </div>
@@ -36,24 +38,37 @@
         <a-button v-else type="primary" @click="saveUpdate">保存</a-button>
       </div>
     </div>
-    <a-modal v-model:visible="visible" :confirm-loading="confirmLoading" @ok="onModalConfirm" @cancel="onModalCancel" width="100%" wrapClassName="full-modal">
+    <a-modal
+      v-model:visible="visible"
+      :confirm-loading="confirmLoading"
+      width="100%"
+      wrap-class-name="full-modal"
+      @ok="onModalConfirm"
+      @cancel="onModalCancel"
+    >
       <div id="tui-image-editor"></div>
     </a-modal>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref, UnwrapRef, reactive } from "vue";
-import { notification } from "ant-design-vue";
-import { useRoute, useRouter } from "vue-router";
-import { locale_zh } from "./tui-settings";
-import "tui-image-editor/dist/tui-image-editor.css";
-import "tui-color-picker/dist/tui-color-picker.css";
-import { useUpload, FileItem } from "../../modules/upload.module";
-import ImageEditor from "tui-image-editor";
-import moment from "moment";
-import { getHomeworkInfo, Homework, WorkStatus, HomeWorkPhotos, updateHomework } from "../../modules/homework.modules";
-import { pinyin } from "pinyin-pro";
+import { nextTick, onMounted, ref, UnwrapRef, reactive } from 'vue';
+import { notification } from 'ant-design-vue';
+import { useRoute, useRouter } from 'vue-router';
+import { locale_zh } from './tui-settings';
+import 'tui-image-editor/dist/tui-image-editor.css';
+import 'tui-color-picker/dist/tui-color-picker.css';
+import { useUpload, FileItem } from '../../modules/upload.module';
+import ImageEditor from 'tui-image-editor';
+import moment from 'moment';
+import {
+  getHomeworkInfo,
+  Homework,
+  WorkStatus,
+  HomeWorkPhotos,
+  updateHomework,
+} from '../../modules/homework.modules';
+import { pinyin } from 'pinyin-pro';
 
 const route = useRoute();
 const router = useRouter();
@@ -61,15 +76,15 @@ const statusList = ref<WorkStatus[] | undefined>([3, 4]);
 const homeworks = ref<HomeWorkPhotos[] | undefined>([]);
 const visible = ref<boolean>(false);
 const homeworkDetail = ref<Homework>({
-  id: "",
+  id: '',
   status: undefined,
-  describe: "", // 标题
-  remark: "", // 备注
-  wechatUser: "",
+  describe: '', // 标题
+  remark: '', // 备注
+  wechatUser: '',
   wechatUserWorkPhotos: [],
 });
 const confirmLoading = ref<boolean>(false);
-const folderName = ref<string>("");
+const folderName = ref<string>('');
 const onlySee = ref<boolean>(false);
 let instance: ImageEditor | null = null;
 let wechatUserWorkPhoto: any;
@@ -78,19 +93,19 @@ const onEdit = async (item: any) => {
   wechatUserWorkPhoto = item;
   visible.value = true;
   await nextTick();
-  const el: Element = document.querySelector("#tui-image-editor")!;
+  const el: Element = document.querySelector('#tui-image-editor')!;
   instance = new ImageEditor(el, {
     includeUI: {
       // @ts-ignore
       locale: locale_zh,
       loadImage: {
         path: item.photoUrl,
-        name: "image",
+        name: 'image',
       },
-      menu: ["text", "shape", "draw", "filter", "crop", "rotate"],
+      menu: ['text', 'shape', 'draw', 'filter', 'crop', 'rotate'],
       usageStatistics: false,
-      initMenu: "draw",
-      menuBarPosition: "right",
+      initMenu: 'draw',
+      menuBarPosition: 'right',
     },
   });
 };
@@ -103,7 +118,10 @@ const getHomeworkDetail = async () => {
   homeworkDetail.value = data?.value;
   homeworks.value = data?.value?.wechatUserWorkPhotos;
   //拼接上传路径
-  folderName.value = `wechat/${pinyin(homeworkDetail.value?.wechatUser.name, { toneType: "none", type: "array" }).join("")}/${moment().format("YYYY-MM-DD")}`;
+  folderName.value = `wechat/${pinyin(homeworkDetail.value?.wechatUser.name, {
+    toneType: 'none',
+    type: 'array',
+  }).join('')}/${moment().format('YYYY-MM-DD')}`;
 };
 
 const onModalCancel = () => {
@@ -111,7 +129,7 @@ const onModalCancel = () => {
 };
 
 const onModalConfirm = () => {
-  wechatUserWorkPhoto.photoUrl = instance?.toDataURL({ format: "jpeg" });
+  wechatUserWorkPhoto.photoUrl = instance?.toDataURL({ format: 'jpeg' });
   wechatUserWorkPhoto.doUpdate = true;
   instance = null;
   visible.value = false;
@@ -122,20 +140,20 @@ const goBack = () => {
 };
 //将base64转换为文件
 const dataURLtoFile = (dataurl: string, name: string) => {
-  let arr = dataurl.split(","),
+  let arr = dataurl.split(','),
     bstr = atob(arr[1]),
     n = bstr.length,
     u8arr = new Uint8Array(n);
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
-  return new File([u8arr], name, { type: "image/jpeg" });
+  return new File([u8arr], name, { type: 'image/jpeg' });
 };
 const saveUpdate = async () => {
   for (let item of homeworkDetail.value.wechatUserWorkPhotos) {
     if (item.doUpdate) {
       let name = Math.random().toString().slice(-6).toString();
-      let file = dataURLtoFile(item.photoUrl, name + ".jpeg");
+      let file = dataURLtoFile(item.photoUrl, name + '.jpeg');
       const { res, url } = await useUpload(file, folderName.value);
       if (res.status === 200) {
         item.photoUrl = url;

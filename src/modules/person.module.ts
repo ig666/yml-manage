@@ -35,9 +35,7 @@ export const usePerson = async (): UsablePerson => {
     params: { name: 'chen' },
   };
 
-  const { request, response: person } = useApi<Person>(
-    'https://api.github.com/rate_limit'
-  );
+  const { request, response: person } = useApi<Person>('https://api.github.com/rate_limit');
   const loaded = ref<boolean>(false);
   if (loaded.value === false) {
     await request();

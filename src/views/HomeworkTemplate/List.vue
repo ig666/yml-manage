@@ -2,10 +2,7 @@
   <div class="homework-template">
     <a-form layout="inline">
       <a-form-item label="标题">
-        <a-input
-          v-model:value="paramsState.describe"
-          placeholder="请输入"
-        ></a-input>
+        <a-input v-model:value="paramsState.describe" placeholder="请输入"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSearch">搜索</a-button>
@@ -15,7 +12,7 @@
     <a-table
       :columns="columns"
       :data-source="homeworkTemplates"
-      rowKey="id"
+      row-key="id"
       :pagination="false"
       :loading="loading"
     >
@@ -26,10 +23,7 @@
         <span>
           <a @click="onRelease(record.id)">发布</a>
           <a-divider type="vertical" />
-          <a-popconfirm
-            title="确认删除当前作业模版？"
-            @confirm="onDelete(record.id)"
-          >
+          <a-popconfirm title="确认删除当前作业模版？" @confirm="onDelete(record.id)">
             <a href="#">删除</a>
           </a-popconfirm>
         </span>
@@ -38,12 +32,12 @@
     <a-pagination
       v-model:current="pageIndex"
       :total="total"
-      @change="onPageChange"
       show-less-items
+      @change="onPageChange"
     />
     <a-modal
-      title="发布作业"
       v-model:visible="visible"
+      title="发布作业"
       :confirm-loading="confirmLoading"
       @ok="onModalConfirm"
       @cancel="onModalCancel"
@@ -59,8 +53,8 @@
           <a-select v-model:value="formState.semesterId">
             <a-select-option
               v-for="item in semesters"
-              :value="item.id"
               :key="item.id"
+              :value="item.id"
               :disabled="isSemesterDisabled(item.homeWorks)"
               >{{ item.semesterName }}</a-select-option
             >

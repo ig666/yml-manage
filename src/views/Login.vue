@@ -9,15 +9,15 @@
           class="login-form"
           :model="formState"
           :rules="rules"
-          :labelCol="labelCol"
+          :label-col="labelCol"
         >
           <a-form-item ref="account" label="用户名" name="account">
             <a-input v-model:value="formState.account"></a-input>
           </a-form-item>
           <a-form-item ref="password" label="密码" name="password">
             <a-input
-              type="password"
               v-model:value="formState.password"
+              type="password"
               @pressEnter="onLogin"
             ></a-input>
           </a-form-item>
@@ -29,10 +29,10 @@
           > -->
         </div>
         <a-button
-          @click="onLogin"
           style="width: 100%; height: 50px; font-size: 20px"
           type="primary"
           :loading="btnLoading"
+          @click="onLogin"
           >登录</a-button
         >
       </div>
@@ -41,10 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  RuleObject,
-  ValidateErrorEntity,
-} from 'ant-design-vue/es/form/interface';
+import { RuleObject, ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
 import { ref, reactive, UnwrapRef, toRaw } from 'vue';
 import { message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
@@ -53,14 +50,14 @@ interface FormState {
   account: string;
   password: string;
 }
-const user = JSON.parse((localStorage.getItem('user') || '{}'))
-console.log(user)
+const user = JSON.parse(localStorage.getItem('user') || '{}');
+console.log(user);
 const formState: UnwrapRef<FormState> = reactive({
   account: user ? user.account : '',
   password: user ? user.password : '',
 });
 let rememberMe = ref<boolean>(localStorage.getItem('remember') == 'true');
-let btnLoading = ref<boolean>(false)
+let btnLoading = ref<boolean>(false);
 
 const formRef = ref();
 const labelCol = { span: 5 };
@@ -76,18 +73,18 @@ const onLogin = (): void => {
     .validate()
     .then(async () => {
       const formData = toRaw(formState);
-      btnLoading.value = true
+      btnLoading.value = true;
       const { account } = await useLogin(formData);
-      btnLoading.value = false
+      btnLoading.value = false;
       if (account.value) {
         message.success('登录成功');
         router.replace({ path: '/person' });
-        if(rememberMe.value){
-          localStorage.setItem('user', JSON.stringify(toRaw(formState)))
+        if (rememberMe.value) {
+          localStorage.setItem('user', JSON.stringify(toRaw(formState)));
         } else {
-          localStorage.removeItem('user')
+          localStorage.removeItem('user');
         }
-        localStorage.setItem('remember', rememberMe.value.toString())
+        localStorage.setItem('remember', rememberMe.value.toString());
         localStorage.setItem('token', account.value.token);
       }
     })

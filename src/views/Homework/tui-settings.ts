@@ -68,6 +68,6 @@ export const locale_zh: any = {
   ZoomIn: '放大',
   ZoomOut: '缩小',
   History: '历史记录',
-  Hand: '拖动'
+  Hand: '拖动',
   // etc...
 };
