@@ -2,7 +2,7 @@ FROM node:alpine as builder
 
 WORKDIR /app
 
-COPY . /app/
+COPY ./dist /app/
 
 # RUN npm i --registry=https://registry.npm.taobao.org
 
@@ -12,7 +12,7 @@ COPY . /app/
 
 FROM nginx:alpine
 
-COPY --from=builder /app/dist /usr/src/app
+COPY --from=builder /app /usr/src/app
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
