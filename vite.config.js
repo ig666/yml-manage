@@ -15,7 +15,7 @@ export default defineConfig({
       less: {
         modifyVars: {
           'border-radius-base': '6px',
-          'primary-color': '#7445c9',
+          'primary-color': '#c8a063',
         },
         javascriptEnabled: true,
       },

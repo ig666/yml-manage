@@ -1,7 +1,7 @@
 import { useApi } from '../hooks';
 import { ref, Ref } from 'vue';
 
-export interface Semester {
+export interface semester {
   id?: string;
   semesterName: string;
   semesterTitle: string;
@@ -12,7 +12,7 @@ export interface Semester {
 }
 
 export interface ResponseSemester {
-  list: Semester[];
+  list: semester[];
   total: number;
 }
 
@@ -23,10 +23,10 @@ export interface RequestParams {
 }
 
 export type UsableGetSemesterInfo = Promise<{
-  semester: Ref<Semester | undefined>;
+  semester: Ref<semester | undefined>;
 }>;
 export const getSemesterInfo = async (id: string): UsableGetSemesterInfo => {
-  const { request, response: semester } = useApi<Semester>('/api/semester/' + id);
+  const { request, response: semester } = useApi<semester>('/api/semester/' + id);
   const loaded = ref<boolean>(false);
   if (loaded.value === false) {
     await request();
@@ -50,7 +50,7 @@ export const getSemesterListByPage = async (params: RequestParams): UsableGetSem
   return { data };
 };
 
-export const createSemester = async (data: Semester) => {
+export const createSemester = async (data: semester) => {
   const { request, response } = useApi<any>('/api/semester', data, 'POST');
   const loaded = ref<boolean>(false);
   let result = null;
@@ -62,7 +62,7 @@ export const createSemester = async (data: Semester) => {
   return result;
 };
 
-export const updateSemester = async (data: Semester) => {
+export const updateSemester = async (data: semester) => {
   const { request, response } = useApi<any>('/api/semester', data, 'PUT');
   const loaded = ref<boolean>(false);
   let result = null;

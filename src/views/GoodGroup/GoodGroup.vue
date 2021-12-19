@@ -1,8 +1,8 @@
 <template>
   <div class="class">
     <a-form layout="inline" :model="paramsState">
-      <a-form-item label="学期名称">
-        <a-input v-model:value="paramsState.semesterName" placeholder="请输入学期名称"></a-input>
+      <a-form-item label="分组名称">
+        <a-input v-model:value="paramsState.groupName" placeholder="请输入分组名称"></a-input>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="onSearch">搜索</a-button>
@@ -16,14 +16,14 @@
       :pagination="false"
       :loading="loading"
     >
-      <template #date="{ record }">
-        <span>{{ formatDate(record.classStartTime) }}</span>
+      <template #wechatUserWorkPhotos="{ record }">
+        <span>{{ record.wechatUserWorkPhotos.length }}</span>
       </template>
       <template #action="{ record }">
         <span>
           <a @click="onEdit(record.id)">编辑</a>
           <a-divider type="vertical" />
-          <a-popconfirm title="确认删除当前学期？" @confirm="onConfirmDelete(record.id)">
+          <a-popconfirm title="确认删除当前分组？" @confirm="onConfirmDelete(record.id)">
             <a href="#">删除</a>
           </a-popconfirm>
         </span>
@@ -49,29 +49,11 @@
           :label-col="labelCol"
           :wrapper-col="wrapperCol"
         >
-          <a-form-item label="学期名称" name="semesterName">
-            <a-input v-model:value="formState.semesterName" placeholder="请输入学期名称" />
+          <a-form-item label="分组名称" name="groupName">
+            <a-input v-model:value="formState.groupName" placeholder="请输入分组名称" />
           </a-form-item>
-          <a-form-item label="学期标题" name="semesterTitle">
-            <a-input v-model:value="formState.semesterTitle" placeholder="请输入学期标题" />
-          </a-form-item>
-          <a-form-item label="价格" name="price">
-            <a-input-number
-              v-model:value="formState.price"
-              :disabled="modalType === 'edit'"
-              :min="0"
-            />
-          </a-form-item>
-          <a-form-item label="开课时间" name="classStartTime">
-            <a-date-picker
-              v-model:value="formState.classStartTime"
-              show-time
-              format="YYYY-MM-DD HH:mm:ss"
-              placeholder="请选择开课时间"
-            />
-          </a-form-item>
-          <a-form-item label="内容" name="content">
-            <a-textarea v-model:value="formState.content" show-count :maxlength="1000" />
+          <a-form-item label="分组描述" name="groupDescript">
+            <a-input v-model:value="formState.groupDescript" placeholder="请输入分组描述" />
           </a-form-item>
         </a-form>
       </template>
@@ -87,54 +69,41 @@ import moment from 'moment';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import {
-  getSemesterInfo,
-  createSemester,
-  updateSemester,
-  getSemesterListByPage,
+  getGoodGroupInfo,
+  createGoodGroup,
+  updateGoodGroup,
+  getGoodGroupListByPage,
   RequestParams,
-  semester,
-  deleteSemester,
-} from '../modules/semester.module';
+  goodGroup,
+  deleteGoodGroup,
+} from '../../modules/goodGroup.moudules';
 
 interface ParamsState {
-  semesterName: string;
+  groupName: string;
 }
 
 interface FormState {
   id?: string;
-  semesterName: string;
-  semesterTitle: string;
-  price: number;
-  content: string;
-  classStartTime: Moment | undefined;
+  groupName: string;
+  groupDescript?: string;
 }
 
 const columns = [
   {
-    title: '学期名称',
-    dataIndex: 'semesterName',
-    key: 'semesterName',
+    title: '分组名称',
+    dataIndex: 'groupName',
+    key: 'groupName',
   },
   {
-    title: '学期标题',
-    dataIndex: 'semesterTitle',
-    key: 'semesterTitle',
+    title: '描述',
+    dataIndex: 'groupDescript',
+    key: 'groupDescript',
   },
   {
-    title: '价格',
-    dataIndex: 'price',
-    key: 'price',
-  },
-  {
-    title: '内容',
-    dataIndex: 'content',
-    key: 'content',
-  },
-  {
-    title: '开课时间',
-    dataIndex: 'classStartTime',
-    key: 'classStartTime',
-    slots: { customRender: 'date' },
+    title: '照片数',
+    dataIndex: 'wechatUserWorkPhotos',
+    key: 'wechatUserWorkPhotos',
+    slots: { customRender: 'wechatUserWorkPhotos' },
   },
   {
     title: '操作',
@@ -143,17 +112,14 @@ const columns = [
   },
 ];
 
-const data = ref<semester[] | undefined>([]);
+const data = ref<goodGroup[] | undefined>([]);
 const formRef = ref();
 const paramsState: UnwrapRef<ParamsState> = reactive({
-  semesterName: '',
+  groupName: '',
 });
 const formState: UnwrapRef<FormState> = reactive({
-  semesterName: '',
-  semesterTitle: '',
-  price: 0,
-  content: '',
-  classStartTime: undefined,
+  groupName: '',
+  groupDescript: '',
 });
 const loading = ref<boolean>(false);
 const pageIndex = ref<number>(1);
@@ -166,13 +132,7 @@ const confirmLoading = ref<boolean>(false);
 const labelCol = { span: 4 };
 const wrapperCol = { span: 18 };
 const rules = {
-  semesterName: [{ required: true, message: '请输入学期名称', trigger: 'blur', type: 'string' }],
-  semesterTitle: [{ required: true, message: '请输入学期标题', trigger: 'blur', type: 'string' }],
-  price: [{ required: true, message: '请输入价格', trigger: 'blur', type: 'number' }],
-  classStartTime: [
-    { required: true, message: '请选择开课时间', trigger: 'change', type: 'object' },
-  ],
-  content: [{ required: true, message: '请输入内容', trigger: 'blur', type: 'string' }],
+  groupName: [{ required: true, message: '请输入学期名称', trigger: 'blur', type: 'string' }],
 };
 
 const title = computed<string>(() => {
@@ -197,7 +157,7 @@ const resetForm = () => {
 
 const onSearch = () => {
   pageIndex.value = 1;
-  getSemesterList();
+  getGoodGroupList();
 };
 
 const onAdd = async () => {
@@ -210,42 +170,39 @@ const onAdd = async () => {
 const onEdit = async (id: string) => {
   modalType.value = 'edit';
   visible.value = true;
-  const { semester } = await getSemesterInfo(id);
-  if (semester) {
-    formState.id = semester.value!.id;
-    formState.semesterName = semester.value!.semesterName;
-    formState.semesterTitle = semester.value!.semesterTitle;
-    formState.price = semester.value!.price;
-    formState.content = semester.value!.content;
-    formState.classStartTime = moment(semester.value?.classStartTime);
+  const { goodGroup } = await getGoodGroupInfo(id);
+  if (goodGroup) {
+    formState.id = goodGroup.value!.id;
+    formState.groupName = goodGroup.value!.groupName;
+    formState.groupDescript = goodGroup.value!.groupDescript;
   }
 };
 
 const onConfirmDelete = async (id: string) => {
   loading.value = true;
-  const res = await deleteSemester(id);
+  const res = await deleteGoodGroup(id);
   if (res.code === 0) {
     notification.success({ message: '删除成功' });
     pageIndex.value = 1;
-    getSemesterList();
+    getGoodGroupList();
   }
 };
 
-const getSemesterList = async () => {
+const getGoodGroupList = async () => {
   const params: RequestParams = {
     pageIndex: pageIndex.value,
     pageSize: pageSize.value,
     ...toRaw(paramsState),
   };
   loading.value = true;
-  const { data: result } = await getSemesterListByPage(params);
+  const { data: result } = await getGoodGroupListByPage(params);
   loading.value = false;
   data.value = result.value?.list;
   total.value = result.value!.total;
 };
 
 const onPageChange = (page: number, pageSize: number) => {
-  getSemesterList();
+  getGoodGroupList();
 };
 
 const onModalConfirm = () => {
@@ -253,19 +210,18 @@ const onModalConfirm = () => {
     .validate()
     .then(async () => {
       const data = JSON.parse(JSON.stringify(toRaw(formState)));
-      data.classStartTime = moment(data.classStartTime).format('YYYY-MM-DD HH:mm:ss');
       confirmLoading.value = true;
       const res =
-        modalType.value === 'add' ? await createSemester(data) : await updateSemester(data);
+        modalType.value === 'add' ? await createGoodGroup(data) : await updateGoodGroup(data);
       confirmLoading.value = false;
       if (res && res.code === 0) {
         notification.success({
           message: modalType.value === 'add' ? '新增成功' : '编辑成功',
         });
         pageIndex.value = 1;
-        paramsState.semesterName = '';
+        paramsState.groupName = '';
         visible.value = false;
-        getSemesterList();
+        getGoodGroupList();
       }
     })
     .catch((error: ValidateErrorEntity<FormState>) => {
@@ -274,7 +230,7 @@ const onModalConfirm = () => {
 };
 
 onMounted: {
-  getSemesterList();
+  getGoodGroupList();
 }
 </script>
 

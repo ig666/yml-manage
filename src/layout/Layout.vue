@@ -38,7 +38,7 @@
           :style="{
             padding: '24px',
             background: '#fff',
-            minHeight: 'calc(100vh - 158px)',
+            minHeight: 'calc(100vh - 200px)',
           }"
         >
           <router-view v-slot="{ Component }">
@@ -48,7 +48,7 @@
           </router-view>
         </div>
       </a-layout-content>
-      <a-layout-footer :style="{ textAlign: 'center' }">
+      <a-layout-footer :style="{ textAlign: 'center', background: '#F8F8FA' }">
         <div>YML ©2021 Created by cc</div>
         <div>
           <img src="../assets/police.png" alt="" />
@@ -97,6 +97,10 @@ const menuList: MenuList = [
   {
     key: '/wechatOrder',
     name: '订单管理',
+  },
+  {
+    key: '/goodGroup',
+    name: '评优分组',
   },
 ];
 

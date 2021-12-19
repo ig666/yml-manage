@@ -21,6 +21,7 @@ export interface DeleteParams {
 }
 
 export interface HomeWorkPhotos {
+  id: string;
   photoUrl: string; // 图片链接
   photoDescript: string; // 描述
   doUpdate: boolean;

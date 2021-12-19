@@ -53,6 +53,10 @@
             <a @click="onCheck(record.id, 'check')">查看</a>
             <a-divider type="vertical" />
           </template>
+          <template v-if="record.status === 3">
+            <a @click="goGoodGroup(record.id)">评优</a>
+            <a-divider type="vertical" />
+          </template>
           <a-popconfirm title="确认删除当前作业？" @confirm="onDelete(record.id)">
             <a href="#">删除</a>
           </a-popconfirm>
@@ -81,7 +85,17 @@ import {
   WorkStatus,
   deleteHomework,
 } from '../../modules/homework.modules';
-import { getSemesterListByPage, Semester } from '../../modules/semester.module';
+import { getSemesterListByPage } from '../../modules/semester.module';
+
+interface semester {
+  id?: string;
+  semesterName: string;
+  semesterTitle: string;
+  price: number;
+  content: string;
+  classStartTime: string;
+  homeWorks?: any;
+}
 
 interface ParamsState {
   semester: string;
@@ -101,7 +115,7 @@ const paramsState: UnwrapRef<ParamsState> = reactive({
   semester: '',
   workStatus: undefined,
 });
-const semesters = ref<Semester[] | undefined>([]);
+const semesters = ref<semester[] | undefined>([]);
 const loading = ref<boolean>(false);
 const pageIndex = ref<number>(1);
 const pageSize = ref<number>(10);
@@ -139,6 +153,10 @@ const onCheck = (id: string, type?: string) => {
     name: 'HomeworkCheck',
     query: { id, type },
   });
+};
+
+const goGoodGroup = (id: string) => {
+  router.push(`/goodGroup/choose?id=${id}`);
 };
 
 const onPageChange = () => {

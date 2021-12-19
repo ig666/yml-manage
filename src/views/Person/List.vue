@@ -38,11 +38,9 @@
       <template #semesters="{ record }">
         <a-tooltip placement="top">
           <template #title>
-            <span
-              >{{ record.semesters.map((item: Semester) => item.semesterName).toString() }}</span
-            >
+            <span>{{ record.semesters.map((item) => item.semesterName).toString() }}</span>
           </template>
-          <span>{{ record.semesters.map((item: Semester) => item.semesterName).toString() }}</span>
+          <span>{{ record.semesters.map((item) => item.semesterName).toString() }}</span>
         </a-tooltip>
       </template>
       <template #action="{ record }">
@@ -64,7 +62,7 @@
 import { notification } from 'ant-design-vue';
 import { ref, reactive, UnwrapRef, toRaw } from 'vue';
 import { columns } from './table';
-import { getSemesterListByPage, Semester } from '../../modules/semester.module';
+import { getSemesterListByPage, semester } from '../../modules/semester.module';
 import {
   getWechatUserListByPage,
   deleteUser,
@@ -87,7 +85,7 @@ const form: UnwrapRef<form> = reactive({
   semesterId: '',
 });
 
-const semesters = ref<Semester[] | undefined>([]);
+const semesters = ref<semester[] | undefined>([]);
 const loading = ref<boolean>(false);
 const pageIndex = ref<number>(1);
 const pageSize = ref<number>(10);

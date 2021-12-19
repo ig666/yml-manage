@@ -67,6 +67,16 @@ const routes = [
         name: 'WechatOrder',
         component: () => import('@/views/Order/List.vue'),
       },
+      {
+        path: '/goodGroup',
+        name: 'GoodGroup',
+        component: () => import('@/views/GoodGroup/GoodGroup.vue'),
+      },
+      {
+        path: '/goodGroup/choose',
+        name: 'Choose',
+        component: () => import('@/views/GoodGroup/Choose.vue'),
+      },
     ],
   },
 ];
