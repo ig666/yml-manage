@@ -128,6 +128,10 @@ const onLogout = () => {
 </script>
 
 <style lang="less" scoped>
+.logo {
+  background: url('../assets/home-logo.jpg') no-repeat center !important;
+  background-size: 100% !important;
+}
 .ant-layout-sider-children .logo {
   height: 32px;
   background: rgba(255, 255, 255, 0.2);
