@@ -29,6 +29,7 @@
         <a-form-item label="上传">
           <a-upload
             v-model:file-list="fileList"
+            :multiple="true"
             name="file"
             :before-upload="onBeforeUpload"
             :show-upload-list="false"
